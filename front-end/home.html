@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>HEYCOUN - 홈</title>
+  <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" rel="stylesheet" />
+  <style>
+    :root {
+      --deep: #1E1F31;
+      --accent: #7460F0;
+      --bg-light-gray: #F8F9FA;
+      --border-gray: #E0E0E0;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: "Pretendard", "Noto Sans KR", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: #FFFFFF;
+      -webkit-font-smoothing: antialiased;
+      color: var(--deep);
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .main-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 60px;
+      border-bottom: 1px solid var(--border-gray);
+    }
+    
+    .main-header .logo {
+      font-weight: 800;
+      font-size: 1.15rem;
+      color: var(--deep);
+    }
+
+    .main-header .logout-link {
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: #666;
+    }
+
+    .main-wrapper {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 60px;
+    }
+
+    .top-section {
+      display: grid;
+      grid-template-columns: 1fr 1fr 300px;
+      gap: 20px;
+      margin-bottom: 40px;
+    }
+
+    .info-card {
+      background: var(--bg-light-gray);
+      border-radius: 20px;
+      padding: 24px;
+      display: flex;
+      align-items: center;
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+    
+    .info-card.chat-card {
+      background: #EBE9FD;
+      color: var(--deep);
+    }
+
+    .info-card .icon {
+      font-size: 2rem;
+      margin-right: 16px;
+    }
+
+    .guide-section {
+      background: var(--bg-light-gray);
+      border-radius: 20px;
+      padding: 24px;
+    }
+    
+    .guide-link {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 600;
+      margin-bottom: 20px;
+    }
+    
+    .guide-nav {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      text-align: center;
+      gap: 10px;
+    }
+    
+    .guide-nav-item {
+      font-size: 0.85rem;
+      color: #555;
+    }
+
+    .guide-nav-item .icon-placeholder {
+      display: block;
+      width: 48px;
+      height: 48px;
+      background: #E0E0E0;
+      border-radius: 20%;
+      margin: 0 auto 8px auto;
+      line-height: 48px;
+      font-size: 1.5rem;
+    }
+
+    .content-section {
+      background: var(--bg-light-gray);
+      border-radius: 20px;
+      padding: 24px;
+      margin-bottom: 20px;
+    }
+    
+    .content-section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    
+    .content-section-header h2 {
+      font-size: 1.25rem;
+      display: flex;
+      align-items: center;
+    }
+
+    .content-section-header .icon {
+      font-size: 1.5rem;
+      margin-right: 8px;
+    }
+
+    .content-section-header .btn-add {
+      font-size: 1.5rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .project-list-item {
+      display: grid;
+      grid-template-columns: 100px 100px 1fr auto;
+      gap: 16px;
+      align-items: center;
+      padding: 12px 0;
+      font-size: 0.95rem;
+    }
+    
+    .project-list-item:not(:last-child) {
+      border-bottom: 1px solid #E0E0E0;
+    }
+
+    .project-list-item .date {
+      color: #555;
+    }
+    
+    .project-list-item .category {
+      font-weight: 600;
+    }
+    
+    .project-list-item .title {
+      font-weight: 500;
+    }
+
+    .project-tags {
+      display: flex;
+      gap: 6px;
+    }
+    
+    .tag {
+      font-size: 0.8rem;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 999px;
+      color: var(--deep);
+    }
+    .tag-purple { background: #EBE9FD; }
+    .tag-blue { background: #E0F2FE; }
+    .tag-green { background: #D1FAE5; }
+    .tag-yellow { background: #FEF3C7; }
+
+    .skill-icons {
+      display: flex;
+      gap: 30px;
+    }
+    
+    .skill-icons img {
+      width: 48px;
+      height: 48px;
+      object-fit: contain;
+    }
+
+    .cert-list-item {
+      display: grid;
+      grid-template-columns: 120px 1fr;
+      padding: 12px 0;
+      font-size: 0.95rem;
+    }
+
+    .cert-list-item:not(:last-child) {
+      border-bottom: 1px solid #E0E0E0;
+    }
+    
+    .cert-list-item .date {
+      color: #555;
+    }
+    
+    .cert-list-item .title {
+      font-weight: 500;
+    }
+
+    .modal-overlay {
+    position: fixed; 
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+
+    .modal-overlay.is-active {
+    visibility: visible;
+    opacity: 1;
+    }
+
+    .modal-content {
+    background: #FFFFFF;
+    padding: 24px 30px;
+    border-radius: 20px;
+    width: 630px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    position: relative;
+    
+    transform: translateY(20px);
+    transition: transform 0.3s ease;
+    }
+
+    .modal-overlay.is-active .modal-content {
+    transform: translateY(0);
+    }
+
+    .modal-content h2 {
+    font-size: 1.25rem;
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+    }
+
+    .modal-content h2 .icon {
+    font-size: 1.5rem;
+    margin-right: 8px;
+    }
+
+    .modal-subtitle {
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 24px;
+    }
+
+    .modal-close-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: none;
+    border: none;
+    font-size: 2rem;
+    color: #888;
+    cursor: pointer;
+    line-height: 1;
+    }
+
+    .modal-form .form-group {
+    margin-bottom: 20px;
+    }
+
+    .modal-form label {
+    display: block;
+    font-weight: 600;
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+    }
+
+    .date-inputs {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    }
+
+    .date-inputs .date-input {
+    width: 80px;
+    padding: 10px;
+    border: 1px solid var(--border-gray);
+    border-radius: 8px;
+    text-align: center;
+    }
+
+    .full-width-input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--border-gray);
+    border-radius: 8px;
+    }
+
+    .radio-group {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    }
+
+    .radio-group input[type="radio"] {
+    display: none; 
+    }
+
+    .radio-group .radio-label {
+    padding: 8px 14px;
+    border: 1px solid var(--border-gray);
+    border-radius: 999px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #555;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    }
+
+    .radio-group input[type="radio"]:checked + .radio-label {
+    background: #EBE9FD;
+    border-color: #C0B8F9;
+    color: var(--deep);
+    font-weight: 600;
+    }
+
+    .modal-submit-btn {
+    width: 100%;
+    padding: 14px;
+    background: var(--deep);
+    color: #FFFFFF;
+    border: none;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background 0.2s;
+    }
+
+    .modal-submit-btn:hover {
+    background: #333;
+    }
+
+    .form-group-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    }
+
+    .form-group-header label {
+    margin-bottom: 0;
+    }
+
+    .btn-add-option {
+    background: none;
+    border: none;
+    color: #888;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    }
+
+    .modal-content.small-modal {
+    width: 380px;
+    }
+
+    .color-palette {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    }
+
+    .color-dot {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 3px solid transparent;
+    transition: border-color 0.2s;
+    box-sizing: border-box;
+    }
+
+    .color-dot:hover,
+    .color-dot.selected { 
+    border-color: #E0E0E0;
+    }
+
+    .modal-content.small-modal .modal-submit-btn,
+    #cert-modal-overlay .modal-submit-btn,
+    #skill-modal-overlay .modal-submit-btn {
+    width: auto;
+    padding: 12px 40px; 
+    display: block;
+    margin: 20px auto 0 auto; 
+    }
+
+    .modal-content.small-modal h2 {
+    display: flex;
+    align-items: center;
+    }
+
+    .modal-content.small-modal h2 .icon {
+    font-size: 1.25rem;
+    margin-right: 8px;
+    }
+
+    .skill-icon-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 20px;
+    padding: 20px 0;
+    }
+
+    .skill-icon-item {
+    background: var(--bg-light-gray);
+    border: 1px solid var(--border-gray);
+    border-radius: 12px;
+    padding: 24px; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    }
+
+    .skill-icon-item img {
+    width: 50px; 
+    height: 50px;
+    object-fit: contain;
+    }
+
+    .skill-icon-item:hover {
+    border-color: #AAAAAA;
+    background: #F1F3F5;
+    }
+
+    .skill-icon-item.selected {
+    border-color: var(--accent); 
+    background: #EBE9FD;
+    }
+  </style>
+</head>
+<body>
+
+  <header class="main-header">
+    <div class="logo">HEYCOUN</div>
+    <a href="intro.html" class="logout-link">로그아웃</a>
+  </header>
+
+  <main class="main-wrapper">
+
+    <section class="top-section">
+      <div class="info-card chat-card">
+        <span class="icon">💬</span> AI 채팅
+      </div>
+      
+      <div class="info-card">
+        <span class="icon">📃</span> 나의 문단들
+      </div>
+      
+      <div class="guide-section">
+        <a href="#" class="guide-link">
+          <span>❔ AI 채팅 가이드 보러가기</span>
+          <span>&gt;</span>
+        </a>
+        <nav class="guide-nav">
+          <a href="#" class="guide-nav-item">
+            <span class="icon-placeholder">🗓️</span>
+            마이캘린더
+          </a>
+          <a href="#" class="guide-nav-item">
+            <span class="icon-placeholder">👥</span>
+            커뮤니티
+          </a>
+          <a href="#" class="guide-nav-item">
+            <span class="icon-placeholder">👤</span>
+            마이페이지
+          </a>
+        </nav>
+      </div>
+    </section>
+
+    <section class="content-section">
+        <div class="content-section-header">
+            <h2><span class="icon">📄</span>나의 프로젝트들</h2>
+            <span class="btn-add" id="open-project-modal" style="cursor: pointer;">➕</span>
+        </div>
+      
+      <div class="project-list">
+        <div class="project-list-item">
+          <span class="date">2022.03</span>
+          <span class="category">학교</span>
+          <span class="title">식품 알러지 권고 홍보 프로젝트</span>
+          <div class="project-tags">
+            <span class="tag tag-purple">기획</span>
+            <span class="tag tag-blue">디자인</span>
+          </div>
+        </div>
+        
+        <div class="project-list-item">
+          <span class="date">2023.11</span>
+          <span class="category">학교</span>
+          <span class="title">AI 활용 심리상담 앱 제작</span>
+          <div class="project-tags">
+            <span class="tag tag-purple">기획</span>
+            <span class="tag tag-green">프론트엔드</span>
+          </div>
+        </div>
+
+        <div class="project-list-item">
+          <span class="date">2024.09</span>
+          <span class="category">대외활동</span>
+          <span class="title">UNITY 활용 게임 제작</span>
+          <div class="project-tags">
+            <span class="tag tag-purple">기획</span>
+            <span class="tag tag-blue">디자인</span>
+            <span class="tag tag-yellow">백엔드</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="content-section">
+        <div class="content-section-header">
+            <h2><span class="icon">⚙️</span>나의 역량들</h2>
+            <span class="btn-add" id="open-skill-modal" style="cursor: pointer;">➕</span>
+        </div>
+      
+      <div class="skill-icons">
+        <img src="images/icon_pp.png" alt="PowerPoint">
+        <img src="images/icon_excel.png" alt="Excel">
+        <img src="images/icon_html.png" alt="HTML5">
+        <img src="images/icon_cpp.png" alt="C++">
+        <img src="images/icon_figma.png" alt="Figma">
+      </div>
+    </section>
+
+    <section class="content-section">
+        <div class="content-section-header">
+            <h2><span class="icon">📜</span>나의 자격증들</h2>
+            <span class="btn-add" id="open-cert-modal" style="cursor: pointer;">➕</span>
+        </div>
+
+        <div class="cert-list">
+            <div class="cert-list-item">
+            <span class="date">2022.03.21</span>
+            <span class="title">GTQ 1급</span>
+            </div>
+            <div class="cert-list-item">
+            <span class="date">2023.09.01</span>
+            <span class="title">정보기술자격(ITQ) 엑셀 A등급</span>
+            </div>
+            <div class="cert-list-item">
+            <span class="date">2023.09.01</span>
+            <span class="title">정보기술자격(ITQ) 파워포인트 A등급</span>
+            </div>
+            <div class="cert-list-item">
+            <span class="date">2024.11.22</span>
+            <span class="title">리눅스마스터 2급</span>
+            </div>
+        </div>
+        </section>
+
+  </main>
+  <div class="modal-overlay" id="project-modal-overlay">
+    <div class="modal-content">
+        <button class="modal-close-btn" id="modal-close-btn">&times;</button>
+        <h2><span class="icon">📄</span>나의 프로젝트들</h2>
+        <p class="modal-subtitle">내가 했던 모든 활동들을 적어보세요</p>
+
+        <form class="modal-form">
+  
+        <div class="form-group">
+            <div class="form-group-header">
+            <label>구분</label>
+            <button type="button" class="btn-add-option" data-modal-title="구분 추가">
+                + 추가
+            </button>
+            </div>
+            <div class="radio-group">
+            <input type="radio" id="cat-school" name="category" value="school" checked>
+            <label for="cat-school" class="radio-label">학교</label>
+            
+            <input type="radio" id="cat-external" name="category" value="external">
+            <label for="cat-external" class="radio-label">대외활동</label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="project-name">프로젝트명</label>
+            <input type="text" id="project-name" class="full-width-input">
+        </div>
+
+        <div class="form-group">
+            <div class="form-group-header">
+            <label>파트</label>
+            <button type="button" class="btn-add-option" data-modal-title="파트 추가">
+                + 추가
+            </button>
+            </div>
+            <div class="radio-group">
+            <input type="radio" id="part-plan" name="part" value="plan">
+            <label for="part-plan" class="radio-label">기획</label>
+            
+            <input type="radio" id="part-design" name="part" value="design">
+            <label for="part-design" class="radio-label">디자인</label>
+
+            <input type="radio" id="part-front" name="part" value="front">
+            <label for="part-front" class="radio-label">프론트엔드</label>
+
+            <input type="radio" id="part-back" name="part" value="back">
+            <label for="part-back" class="radio-label">백엔드</label>
+            </div>
+        </div>
+
+        <button type="submit" class="modal-submit-btn">확인</button>
+        </form>
+    </div>
+</div>
+
+<div class="modal-overlay" id="add-category-modal">
+  <div class="modal-content small-modal">
+    <button class="modal-close-btn" data-modal-close="add-category-modal">&times;</button>
+    <h2>
+        <span class="icon">☑️</span>
+        <span id="add-category-modal-title">구분</span>
+    </h2> <form class="modal-form">
+      <div class="form-group">
+        <label for="new-item-name">이름</label>
+        <input type="text" id="new-item-name" class="full-width-input">
+      </div>
+
+      <div class="form-group">
+        <label>색상</label>
+        <div class="color-palette">
+          <span class="color-dot" style="background-color: #F8BBD0;" data-color="#F8BBD0"></span>
+          <span class="color-dot" style="background-color: #FFD54F;" data-color="#FFD54F"></span>
+          <span class="color-dot" style="background-color: #A5D6A7;" data-color="#A5D6A7"></span>
+          <span class="color-dot" style="background-color: #81C784;" data-color="#81C784"></span>
+          <span class="color-dot" style="background-color: #B3E5FC;" data-color="#B3E5FC"></span>
+          <span class="color-dot" style="background-color: #B39DDB;" data-color="#B39DDB"></span>
+        </div>
+      </div>
+      
+      <button type="button" class="modal-submit-btn" id="save-new-item-btn">추가</button>
+    </form>
+  </div>
+</div>
+<div class="modal-overlay" id="cert-modal-overlay">
+  <div class="modal-content">
+    <button class="modal-close-btn" id="cert-modal-close-btn">&times;</button>
+    <h2><span class="icon">📜</span>나의 자격증들</h2>
+    <p class="modal-subtitle">내가 취득한 자격증을 적어보세요</p>
+
+    <form class="modal-form">
+      <div class="form-group">
+        <label>날짜</label>
+        <div class="date-inputs">
+          <input type="text" placeholder="YYYY" class="date-input"> 년
+          <input type="text" placeholder="MM" class="date-input"> 월
+          <input type="text" placeholder="DD" class="date-input"> 일
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="cert-name">자격증</label>
+        <input type="text" id="cert-name" class="full-width-input">
+      </div>
+
+      <button type="submit" class="modal-submit-btn">확인</button>
+    </form>
+  </div>
+</div>
+<div class="modal-overlay" id="skill-modal-overlay">
+  <div class="modal-content">
+    <button class="modal-close-btn" id="skill-modal-close-btn">&times;</button>
+    <h2><span class="icon">⚙️</span>나의 역량들</h2>
+    <p class="modal-subtitle">내가 자신있는 프로그램들을 추가해보세요</p>
+
+    <div class="skill-icon-grid">
+      <div class="skill-icon-item" data-skill="PowerPoint">
+        <img src="images/icon_pp.png" alt="PowerPoint">
+      </div>
+      <div class="skill-icon-item" data-skill="Excel">
+        <img src="images/icon_excel.png" alt="Excel">
+      </div>
+      <div class="skill-icon-item" data-skill="HTML5">
+        <img src="images/icon_html.png" alt="HTML5">
+      </div>
+      <div class="skill-icon-item" data-skill="C++">
+        <img src="images/icon_cpp.png" alt="C++">
+      </div>
+      <div class="skill-icon-item" data-skill="Figma">
+        <img src="images/icon_figma.png" alt="Figma">
+      </div>
+
+      <div class="skill-icon-item" data-skill="Illustrator">
+        <img src="images/icon_ai.png" alt="Illustrator">
+      </div>
+      <div class="skill-icon-item" data-skill="Photoshop">
+        <img src="images/icon_ps.png" alt="Photoshop">
+      </div>
+      <div class="skill-icon-item" data-skill="Lightroom">
+        <img src="images/icon_lr.png" alt="Lightroom">
+      </div>
+      <div class="skill-icon-item" data-skill="After Effects">
+        <img src="images/icon_ae.png" alt="After Effects">
+      </div>
+      <div class="skill-icon-item" data-skill="InDesign">
+        <img src="images/icon_id.png" alt="InDesign">
+      </div>
+
+      <div class="skill-icon-item" data-skill="Python">
+        <img src="images/icon_python.png" alt="Python">
+      </div>
+      <div class="skill-icon-item" data-skill="React">
+        <img src="images/icon_react.png" alt="React">
+      </div>
+      <div class="skill-icon-item" data-skill="Java">
+        <img src="images/icon_java.png" alt="Java">
+      </div>
+      <div class="skill-icon-item" data-skill="Swift">
+        <img src="images/icon_swift.png" alt="Swift">
+      </div>
+      <div class="skill-icon-item" data-skill="Android">
+        <img src="images/icon_android.png" alt="Android">
+      </div>
+    </div>
+
+    <button type="button" class="modal-submit-btn" id="skill-submit-btn">확인</button>
+  </div>
+</div>
+
+<script>
+  const openProjectModalBtn = document.getElementById('open-project-modal');
+  const projectModalOverlay = document.getElementById('project-modal-overlay');
+  const closeProjectModalBtn = document.getElementById('modal-close-btn');
+
+  const addOptionButtons = document.querySelectorAll('.btn-add-option'); 
+  const addCategoryModalOverlay = document.getElementById('add-category-modal'); 
+  const closeCategoryModalBtn = addCategoryModalOverlay.querySelector('[data-modal-close="add-category-modal"]'); 
+  const saveCategoryModalBtn = document.getElementById('save-new-item-btn'); 
+  const addCategoryModalTitle = document.getElementById('add-category-modal-title'); 
+
+  if (openProjectModalBtn) {
+    openProjectModalBtn.addEventListener('click', () => {
+      projectModalOverlay.classList.add('is-active'); 
+    });
+  }
+
+  if (closeProjectModalBtn) {
+    closeProjectModalBtn.addEventListener('click', () => {
+      projectModalOverlay.classList.remove('is-active'); 
+    });
+  }
+  
+  if (projectModalOverlay) {
+    projectModalOverlay.addEventListener('click', (event) => {
+      if (event.target === projectModalOverlay) {
+        projectModalOverlay.classList.remove('is-active');
+      }
+    });
+  }
+
+  addOptionButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      const modalTitle = button.dataset.modalTitle;
+      
+      projectModalOverlay.classList.remove('is-active');
+      
+      if (addCategoryModalTitle) {
+        addCategoryModalTitle.textContent = modalTitle;
+      }
+      
+      setTimeout(() => {
+        addCategoryModalOverlay.classList.add('is-active');
+      }, 50); 
+    });
+  });
+
+  function closeAndReopenFirstModal() {
+    addCategoryModalOverlay.classList.remove('is-active');
+    
+    setTimeout(() => {
+      projectModalOverlay.classList.add('is-active');
+    }, 50);
+  }
+
+  if (closeCategoryModalBtn) {
+    closeCategoryModalBtn.addEventListener('click', closeAndReopenFirstModal);
+  }
+
+  if (saveCategoryModalBtn) {
+    saveCategoryModalBtn.addEventListener('click', () => {
+      closeAndReopenFirstModal();
+    });
+  }
+
+  if (addCategoryModalOverlay) {
+    addCategoryModalOverlay.addEventListener('click', (event) => {
+      if (event.target === addCategoryModalOverlay) {
+        closeAndReopenFirstModal();
+      }
+    });
+  }
+  const openCertModalBtn = document.getElementById('open-cert-modal');
+  const certModalOverlay = document.getElementById('cert-modal-overlay');
+  const closeCertModalBtn = document.getElementById('cert-modal-close-btn');
+
+  if (openCertModalBtn) {
+    openCertModalBtn.addEventListener('click', () => {
+      certModalOverlay.classList.add('is-active'); 
+    });
+  }
+
+  if (closeCertModalBtn) {
+    closeCertModalBtn.addEventListener('click', () => {
+      certModalOverlay.classList.remove('is-active');
+    });
+  }
+  
+  if (certModalOverlay) {
+    certModalOverlay.addEventListener('click', (event) => {
+      if (event.target === certModalOverlay) {
+        certModalOverlay.classList.remove('is-active');
+      }
+    });
+  }
+  const openSkillModalBtn = document.getElementById('open-skill-modal');
+  const skillModalOverlay = document.getElementById('skill-modal-overlay');
+  const closeSkillModalBtn = document.getElementById('skill-modal-close-btn');
+  const skillSubmitBtn = document.getElementById('skill-submit-btn');
+
+  if (openSkillModalBtn) {
+    openSkillModalBtn.addEventListener('click', () => {
+      skillModalOverlay.classList.add('is-active');
+    });
+  }
+
+  function closeSkillModal() {
+    skillModalOverlay.classList.remove('is-active'); 
+  }
+
+  if (closeSkillModalBtn) {
+    closeSkillModalBtn.addEventListener('click', closeSkillModal);
+  }
+  
+  if (skillSubmitBtn) {
+    skillSubmitBtn.addEventListener('click', closeSkillModal);
+  }
+
+  
+  if (skillModalOverlay) {
+    skillModalOverlay.addEventListener('click', (event) => {
+      if (event.target === skillModalOverlay) {
+        closeSkillModal();
+      }
+    });
+  }
+  
+  const skillIcons = document.querySelectorAll('.skill-icon-item');
+  if (skillIcons) {
+    skillIcons.forEach(icon => {
+      icon.addEventListener('click', () => {
+        icon.classList.toggle('selected');
+      });
+    });
+  }
+</script>
+</body>
+</html>
