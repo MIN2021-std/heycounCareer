@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>HEYCOUN</title>
+  <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" rel="stylesheet" />
+  <style>
+    :root {
+      --bg-top: #D2CFEA; 
+      --bg-bottom: #FFFFFF;
+      --accent: #7460F0;
+      --deep: #1E1F31;
+      --dot-color: #D2CFEA;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: "Pretendard", "Noto Sans KR", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: linear-gradient(180deg, var(--bg-top) 0%, var(--bg-bottom) 80%);
+      min-height: 100vh; 
+      background-attachment: fixed; 
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    header {
+      background: #FFFFFF;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 60px;
+      box-shadow: 0 1px 0 rgba(0, 0, 0, 0.04);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .logo {
+      font-weight: 800;
+      font-size: 1.15rem;
+      color: var(--deep);
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 26px;
+    }
+
+    nav a {
+      color: #1E1F31;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .nav-item {
+      position: static; 
+    }
+
+    .dropdown-menu {
+      position: absolute;
+      top: 100%; 
+      left: 0;
+      width: 100%;
+      background: #F6F6F6;
+      border-top: none;
+      box-shadow: none;
+      
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-10px);
+      transition: all 0.3s ease;
+      z-index: 40; 
+      pointer-events: none;
+    }
+    
+    .dropdown-menu.is-active {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+      pointer-events: auto; 
+    }
+
+    .dropdown-content {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 80px 100px;
+      text-align: left;
+    }
+    
+    .dropdown-content h2 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: #1E1F31;
+      margin-bottom: 20px;
+    }
+    .dropdown-content .bold-text {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #1E1F31;
+      margin-top: 30px;
+      margin-bottom: 20px;
+    }
+    .dropdown-content p {
+      font-size: 1.1rem;
+      color: #1E1F31;
+      line-height: 1.7;
+      margin-bottom: 20px;
+      max-width: 900px; 
+    }
+    .dropdown-content .intro {
+      font-size: 1.1rem;
+      color: #1E1F31;
+      line-height: 1.7;
+      margin-bottom: 20px;
+      max-width: 900px; 
+    }
+    .dropdown-content .highlight {
+      font-size: 1.5rem;
+      color: #1E1F31;
+      font-weight: 700;
+    }
+
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 40px;
+    }
+    
+    .team-member {
+      text-align: center;
+    }
+    
+    .team-member img {
+      width: 150px; 
+      height: 150px;
+      object-fit: contain; 
+      margin-bottom: 16px;
+    }
+
+    .team-member:nth-child(3) img {
+      width: 130px; 
+      height: 130px; 
+      margin-top: 20px;
+    }
+
+    .team-member:nth-child(4) img {
+      width: 145px; 
+      height: 145px; 
+      margin-top: 5px;
+    }
+
+    .team-member h3 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--deep);
+      margin-bottom: 6px;
+    }
+    
+    .team-member p {
+      font-size: 0.95rem !important; 
+      color: #555 !important;
+      margin-bottom: 16px !important;
+      max-width: 100% !important; 
+    }
+    
+    .team-member ul {
+      list-style-type: disc; 
+      padding-left: 20px; 
+      display: inline-block;
+      text-align: left;
+    }
+    
+    .team-member li {
+      font-size: 0.95rem;
+      color: #333;
+      margin-bottom: 6px;
+      line-height: 1.6;
+    }
+
+    .cta {
+      background: var(--deep);
+      color: #FFFFFF;
+      padding: 10px 20px;
+      border-radius: 28px;
+      text-decoration: none;
+      font-weight: 700;
+      transition: background 0.3s ease;
+    }
+
+    .cta:hover {
+        background: #1E1F31;
+    }
+
+    .hero {
+      display: flex;
+      align-items: center; 
+      justify-content: space-between; 
+      padding: 0px 60px; 
+      max-width: 1400px;
+      margin: 0 auto;
+      margin-top: -150px;
+    }
+
+    .left {
+      width: 50%;
+      max-width: 600px;
+      text-align: left;
+    }
+
+    h1 {
+      font-size: 3rem;
+      line-height: 1.15;
+      margin: 40px 0 18px 0;
+      font-weight: 800;
+      color: #1E1F31;
+    }
+
+    .sub {
+      font-size: 1.5rem;
+      color: #1E1F31;
+      margin-bottom: 36px;
+    }
+
+    .accent {
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    .bubbles {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      max-width: 500px;
+      align-items: flex-start;
+    }
+
+    .bubble {
+      background: #FFFFFF;
+      padding: 14px 22px;
+      border-radius: 999px;
+      box-shadow: 0 10px 30px rgba(33, 27, 50, 0.06);
+      width: fit-content;
+      max-width: 100%;
+      font-size: 1rem;
+      color: #1E1F31;
+      line-height: 1.5;
+    }
+
+    .bubbles .bubble:nth-child(2) {
+      margin-left: 100px;
+    }
+
+    .bubbles .bubble:nth-child(3) {
+      margin-left: 40px;
+    }
+
+    .dots {
+      display: flex;
+      flex-direction: column;
+      gap: 8px; 
+      margin-top: 15px;
+      margin-left: 220px; 
+    }
+
+    .dots span {
+      width: 10px;
+      height: 10px;
+      background-color: var(--dot-color);
+      border-radius: 50%;
+    }
+
+    .phone-wrap {
+      width: clamp(280px, 24vw, 330px); 
+      margin-right: 0;
+      position: relative;
+      background-color: transparent;
+      flex-shrink: 0; 
+      margin-top: 220px;
+    }
+
+    .phone {
+      width: 100%;
+      display: block;
+      border-radius: 24px;
+      background-color: transparent;
+    }
+
+    @media (max-width: 1024px) {
+      header {
+        padding: 15px 20px;
+      }
+      nav a:not(.cta) {
+          display: none;
+      }
+      
+      .dropdown-menu {
+        display: none !important;
+      }
+
+      .hero {
+        flex-direction: column;
+        text-align: center;
+        padding: 60px 20px; 
+        min-height: auto;
+        align-items: center; 
+        margin-top: 0; 
+      }
+
+      .left {
+        width: 100%;
+        margin-bottom: 40px;
+        max-width: 100%;
+      }
+
+      h1 {
+        font-size: 2.2rem;
+        margin-top: 20px;
+      }
+
+      .bubbles {
+        align-items: center;
+        max-width: 100%;
+      }
+
+      .bubbles .bubble:nth-child(2),
+      .bubbles .bubble:nth-child(3) {
+        margin-left: 0;
+      }
+
+      .dots {
+        margin-left: 0;
+        align-items: center;
+      }
+
+      .phone-wrap {
+        margin-right: 0;
+        transform: none;
+        filter: drop-shadow(0 10px 25px rgba(0, 0, 0, 0.08));
+        margin-top: 0; 
+      }
+      
+      .team-grid {
+        grid-template-columns: 1fr;
+        gap: 30px;
+      }
+      .team-member {
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">HEYCOUN</div>
+    <nav>
+      <div class="nav-item" data-content="project_explain.html">
+        <a href="#">프로젝트 소개</a>
+        <div class="dropdown-menu"></div>
+      </div>
+
+      <div class="nav-item" data-content="team_explain.html">
+        <a href="#">팀원 소개</a>
+        <div class="dropdown-menu"></div>
+      </div>
+
+      <a class="cta" href="login.html">시작하기</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <div class="left">
+      <h1>AI와 대화를 통해<br>진짜 나를 알아가는 과정</h1>
+      <div class="sub">같이 써봐요 <span class="accent">헤이! 포트폴</span></div>
+
+      <div class="bubbles">
+        <div class="bubble">오늘도 나에게 한 발자국 더 가까워질 준비됐나요? 어떤…</div>
+        <div class="bubble">2년전에 학교 비교과 프로그램으로 어도비 관련해서 배…</div>
+        <div class="bubble">그 교육 프로그램에 대해 자세히 들어가볼게요. 프로그…</div>
+        
+        <div class="dots">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="phone-wrap">
+      <img src="images/phone.png" alt="HEYCOUN 앱 목업" class="phone" />
+    </div>
+  </section>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const navItems = document.querySelectorAll('.nav-item');
+
+      navItems.forEach(navItem => {
+        const navLink = navItem.querySelector('a');
+        const dropdownMenu = navItem.querySelector('.dropdown-menu');
+        const contentFile = navItem.dataset.content;
+        let contentLoaded = false; 
+
+        navLink.addEventListener('mouseenter', () => {
+          dropdownMenu.classList.add('is-active'); 
+
+          if (contentFile && !contentLoaded) {
+            fetch(contentFile) 
+              .then(response => {
+                if (!response.ok) { 
+                  throw new Error(`${contentFile} 파일을 찾을 수 없습니다.`);
+                }
+                return response.text(); 
+              })
+              .then(html => {
+                dropdownMenu.innerHTML = html; 
+                contentLoaded = true; 
+              })
+              .catch(error => {
+                console.error('드롭다운 콘텐츠 로드 실패:', error);
+                dropdownMenu.innerHTML = `<div class="dropdown-content"><p style="color:red;">${error.message}</p></div>`;
+              });
+          }
+        });
+
+        navLink.addEventListener('mouseleave', () => {
+          dropdownMenu.classList.remove('is-active');
+        });
+        
+        dropdownMenu.addEventListener('mouseenter', () => {
+            dropdownMenu.classList.add('is-active');
+        });
+        dropdownMenu.addEventListener('mouseleave', () => {
+            dropdownMenu.classList.remove('is-active');
+        });
+      });
+    });
+  </script>
+</body>
+</html>
