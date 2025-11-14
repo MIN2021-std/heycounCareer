@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>HEYCOUN - AI 채팅</title>
+  <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" rel="stylesheet" />
+  
+  <style>
+    :root {
+      --deep: #1E1F31;
+      --accent: #7460F0;
+      --bg-light-gray: #F8F9FA;
+      --border-gray: #E0E0E0;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: "Pretendard", "Noto Sans KR", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: #FFFFFF;
+      -webkit-font-smoothing: antialiased;
+      color: var(--deep);
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .sidebar-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 300px;
+      height: 100%;
+      background: #FFFFFF;
+      z-index: 1001;
+      padding: 30px;
+      transform: translateX(-100%);
+      transition: transform 0.3s ease;
+    }
+    .sidebar.is-active {
+      transform: translateX(0);
+    }
+    .sidebar-overlay.is-active {
+      opacity: 1;
+      visibility: visible;
+    }
+    .sidebar-close-btn {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      font-size: 2rem;
+      color: #888;
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
+    .sidebar-menu {
+      margin-top: 60px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .sidebar-btn {
+      padding: 10px 0;
+      background: none;
+      border: none;
+      border-radius: 0;
+      font-weight: 600;
+      color: var(--deep);
+      text-align: left;
+      cursor: pointer;
+      transition: color 0.2s;
+      font-size: 1.1rem;
+    }
+    .sidebar-btn:hover {
+      background: none;
+      color: var(--accent);
+    }
+
+    .chat-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 60px;
+    }
+    .menu-icon {
+      font-size: 1.8rem;
+      font-weight: 600;
+      color: #AAAAAA;
+      cursor: pointer;
+    }
+
+    .chat-log-area {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 20px;
+      overflow-y: auto;
+      width: 100%;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .chat-welcome-section {
+      flex-grow: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+    
+    .chat-welcome-section img {
+      width: 200px;
+      height: 200px;
+      object-fit: contain;
+    }
+
+    .chat-bubble {
+      padding: 14px 20px;
+      border-radius: 20px;
+      margin-bottom: 12px;
+      max-width: 75%;
+      line-height: 1.6;
+      font-size: 0.95rem;
+      word-wrap: break-word;
+    }
+    .ai-bubble {
+      background: #EBE9FD;
+      color: var(--deep);
+      align-self: flex-start;
+      border-bottom-left-radius: 4px;
+    }
+    .user-bubble {
+      background: #FFFFFF;
+      border: 1px solid var(--border-gray);
+      color: var(--deep);
+      align-self: flex-end;
+      border-bottom-right-radius: 4px;
+    }
+
+    .chat-input-area {
+      width: 100%;
+      padding: 20px 0;
+      background: #FFFFFF;
+    }
+    .chat-input-form {
+      width: 100%;
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    .chat-input-wrapper {
+      position: relative;
+    }
+    .chat-input-form textarea {
+      width: 100%;
+      min-height: 60px;
+      padding: 20px 60px 20px 24px;
+      border: 1px solid var(--border-gray);
+      border-radius: 16px;
+      font-size: 1rem;
+      font-family: "Pretendard", sans-serif;
+      resize: none;
+      line-height: 1.5;
+      color: var(--deep);
+    }
+    .chat-input-form textarea::placeholder {
+      color: #999;
+    }
+    .chat-input-form textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+
+    .chat-submit-btn {
+      position: absolute;
+      right: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: var(--deep);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 36px;
+      height: 36px;
+      cursor: pointer;
+      transition: background 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .chat-submit-btn svg {
+      width: 18px;
+      height: 18px;
+      fill: #FFFFFF;
+      margin-left: 2px;
+    }
+    .chat-submit-btn:hover {
+      background: #333;
+    }
+    
+  </style>
+</head>
+<body>
+
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
+  <aside class="sidebar" id="sidebar">
+    <button class="sidebar-close-btn" id="sidebar-close-btn">&times;</button>
+    <nav class="sidebar-menu">
+      <a href="chat.html" class="sidebar-btn">새로운 채팅 시작하기</a>
+      <a href="home.html" class="sidebar-btn">채팅 종료하기</a>
+    </nav>
+  </aside>
+
+  <header class="chat-header">
+    <a class="menu-icon" id="open-menu-btn">☰</a>
+  </header>
+
+  <main class="chat-log-area" id="chat-log-area">
+    
+    <section class="chat-welcome-section" id="chat-welcome-logo">
+      <div>
+        <img src="images/chat_logo.png" alt="채팅 로고">
+      </div>
+    </section>
+    
+    </main>
+
+  <section class="chat-input-area">
+    <form class="chat-input-form" id="chat-form">
+      <div class="chat-input-wrapper">
+        <textarea 
+          id="chat-input"
+          placeholder="어떤 문단을 만들고 싶으세요?" 
+          rows="1"
+          oninput="this.style.height = 'auto'; this.style.height = (this.scrollHeight) + 'px';"
+        ></textarea>
+        <button type="submit" class="chat-submit-btn">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2 .01 7z"></path>
+          </svg>
+        </button>
+      </div>
+    </form>
+  </section>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const openBtn = document.getElementById('open-menu-btn');
+      const closeBtn = document.getElementById('sidebar-close-btn');
+      const overlay = document.getElementById('sidebar-overlay');
+      const sidebar = document.getElementById('sidebar');
+
+      function openSidebar() {
+        sidebar.classList.add('is-active');
+        overlay.classList.add('is-active');
+      }
+
+      function closeSidebar() {
+        sidebar.classList.remove('is-active');
+        overlay.classList.remove('is-active');
+      }
+
+      if (openBtn) {
+        openBtn.addEventListener('click', openSidebar);
+      }
+      if (closeBtn) {
+        closeBtn.addEventListener('click', closeSidebar);
+      }
+      if (overlay) {
+        overlay.addEventListener('click', closeSidebar);
+      }
+    });
+
+    const chatForm = document.getElementById('chat-form');
+    const chatInput = document.getElementById('chat-input');
+    const chatLogArea = document.getElementById('chat-log-area');
+    const chatWelcomeLogo = document.getElementById('chat-welcome-logo');
+
+    if (chatForm) {
+      chatForm.addEventListener('submit', (event) => {
+        event.preventDefault(); 
+        
+        const messageText = chatInput.value.trim();
+        if (messageText === "") {
+          return;
+        }
+
+        if (chatWelcomeLogo && chatWelcomeLogo.style.display !== 'none') {
+          chatWelcomeLogo.style.display = 'none';
+          chatLogArea.style.justifyContent = 'flex-start';
+        }
+        appendMessage(messageText, 'user-bubble');
+    
+        chatInput.value = "";
+        chatInput.style.height = 'auto';
+
+        setTimeout(() => {
+          appendMessage("그 내용에 대해 좀 더 자세히 알려주시겠어요?", 'ai-bubble');
+        }, 1000);
+      });
+    }
+
+    function appendMessage(text, bubbleClass) {
+      const messageDiv = document.createElement('div');
+      messageDiv.className = `chat-bubble ${bubbleClass}`;
+      messageDiv.textContent = text;
+      chatLogArea.appendChild(messageDiv);
+      chatLogArea.scrollTop = chatLogArea.scrollHeight;
+    }
+    chatLogArea.style.justifyContent = 'center';
+  </script>
+</body>
+</html>
