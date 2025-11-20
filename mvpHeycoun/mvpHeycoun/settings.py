@@ -11,9 +11,16 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+import os
+from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Load environment variables from .env files (project-level and workspace-level)
+# This makes development keys available without exporting them in the shell.
+load_dotenv(os.path.join(BASE_DIR, '.env'))
+load_dotenv(os.path.join(BASE_DIR, '..', '.env'))
 
 
 # Quick-start development settings - unsuitable for production
@@ -37,6 +44,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'portfolios',
+    'chats'
 ]
 
 MIDDLEWARE = [
@@ -54,7 +63,7 @@ ROOT_URLCONF = 'mvpHeycoun.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -64,6 +73,11 @@ TEMPLATES = [
             ],
         },
     },
+]
+
+# 개발 중 정적 파일 경로 추가 
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, '..', 'front-end')
 ]
 
 WSGI_APPLICATION = 'mvpHeycoun.wsgi.application'
