@@ -116,21 +116,42 @@
     <div class="login-box">
       <h1>HEYCOUN</h1>
       
-      <form class="login-form" action="home.html" method="get">
+      <form class="login-form" onsubmit="return handleLogin(event)">
         <div class="input-group">
           <label for="username">아이디</label>
-          <input type="text" id="username">
+          <input type="text" id="username" placeholder="아이디를 입력해주세요" required>
         </div>
         
         <div class="input-group">
           <label for="password">비밀번호</label>
-          <input type="password" id="password">
+          <input type="password" id="password" placeholder="비밀번호를 입력해주세요" required>
         </div>
 
-        <button type="submit" class="login-button">시작하러 가볼까요?</button>
+        <button type="submit" class="login-button">로그인</button>
       </form>
+      
+      <div style="margin-top: 20px; text-align: center;">
+        <span style="color: #888; font-size: 0.9rem;">계정이 없으신가요? </span>
+        <a href="signup.html" style="color: #6D5DCD; font-weight: 600; font-size: 0.9rem;">회원가입</a>
+      </div>
     </div>
   </div>
+
+  <script>
+    function handleLogin(event) {
+      event.preventDefault();
+
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+
+      if(username && password) {
+        localStorage.setItem('isHeycounLoggedIn', 'true');
+        localStorage.setItem('username', username);
+        alert(`환영합니다, ${username}님!`);
+        location.href = 'home.html';
+      }
+    }
+  </script>
 
 </body>
 </html>

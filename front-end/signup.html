@@ -8,6 +8,7 @@
   <style>
     :root {
       --deep: #1E1F31; 
+      --primary: #6D5DCD;
     }
 
     * {
@@ -17,8 +18,8 @@
     }
 
     body {
-      font-family: "Pretendard", "Noto Sans KR", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-      background: #FFFFFF;
+      font-family: "Pretendard", "Noto Sans KR", sans-serif;
+      background: #FFFFFF; /* 배경색 */
       display: flex;
       align-items: center;
       justify-content: center;
@@ -28,28 +29,33 @@
       overflow: hidden;
     }
 
-    .login-wrapper {
+    .signup-wrapper {
       position: relative;
       z-index: 10;
     }
 
-    .login-box {
-      background: #F8F9FA;
+    .signup-box {
+      background: #FFFFFF;
       padding: 50px 60px;
       border-radius: 24px;
       width: 440px;
       text-align: center;
       box-shadow: 0 10px 40px rgba(0, 0, 0, 0.07);
+      border: 1px solid #F0F0F0;
     }
 
-    .login-box h1 {
-      color: var(--deep);
-      font-weight: 800;
-      font-size: 1.75rem;
-      margin-bottom: 40px;
+    .logo {
+      margin-bottom: 50px; 
     }
 
-    .login-form {
+    .logo img {
+      width: 160px; 
+      height: auto;
+      display: block;
+      margin: 0 auto; 
+    }
+
+    .signup-form {
       text-align: left;
     }
 
@@ -59,78 +65,100 @@
 
     .input-group label {
       display: block;
-      font-size: 0.9rem;
-      font-weight: 600;
-      color: #555;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #333;
       margin-bottom: 8px;
     }
 
     .input-group input {
       width: 100%;
-      padding: 14px 16px;
+      padding: 16px;
       border: 1px solid #E0E0E0;
       border-radius: 12px;
       font-size: 1rem;
       font-family: "Pretendard", sans-serif;
+      background-color: #FAFAFA;
+      transition: all 0.2s;
     }
     
     .input-group input:focus {
       outline: none;
-      border-color: #AAAAAA;
+      border-color: var(--primary);
+      background-color: #fff;
+      box-shadow: 0 0 0 3px rgba(109, 93, 205, 0.1);
     }
 
-    .login-button {
+    .signup-button {
       width: 100%;
-      padding: 16px;
-      margin-top: 10px;
+      padding: 18px;
+      margin-top: 20px;
       background: var(--deep);
       color: #FFFFFF;
       border: none;
       border-radius: 12px;
       font-weight: 700;
-      font-size: 1rem;
+      font-size: 1.1rem;
       font-family: "Pretendard", sans-serif;
       cursor: pointer;
-      transition: background 0.3s ease;
+      transition: transform 0.1s, background 0.3s;
     }
 
-    .login-button:hover {
+    .signup-button:hover {
       background: #333452;
+      transform: translateY(-2px); 
     }
     
     .bg-character {
       position: absolute;
-      bottom: 20px;
-      left: 0px;
-      width: 200px;
+      bottom: 0;
+      left: 0;
+      width: 180px;
       z-index: 5;
+      opacity: 0.9;
     }
 
   </style>
 </head>
 <body>
 
-  <img src="images/login_logo.png" alt="회원가입 로고 캐릭터" class="bg-character">
+  <img src="images/signup_logo.png" alt="캐릭터" class="bg-character">
 
   <div class="signup-wrapper">
     <div class="signup-box">
-      <h1>HEYCOUN</h1>
-      
-      <form class="signup-form" action="home.html" method="get">
+      <div class="logo">
+        <img src="images/logo.png" alt="HEYCOUN">
+      </div>
+
+      <form class="signup-form" onsubmit="return handleSignup(event)">
         <div class="input-group">
           <label for="username">아이디</label>
-          <input type="text" id="username">
+          <input type="text" id="username" placeholder="아이디를 입력해주세요" required>
         </div>
         
         <div class="input-group">
           <label for="password">비밀번호</label>
-          <input type="password" id="password">
+          <input type="password" id="password" placeholder="비밀번호를 입력해주세요" required>
         </div>
 
         <button type="submit" class="signup-button">시작하러 가볼까요?</button>
       </form>
     </div>
   </div>
+
+  <script>
+    function handleSignup(event) {
+      event.preventDefault();
+
+      const username = document.getElementById('username').value;
+
+      if(username) {
+        localStorage.setItem('isHeycounLoggedIn', 'true');
+        alert(`환영합니다, ${username}님!\n헤이!포트폴과 함께 포트폴리오를 완성해보세요.`);
+        location.href = 'home.html';
+      }
+    }
+  </script>
 
 </body>
 </html>
