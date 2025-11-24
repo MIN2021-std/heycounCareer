@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>HEYCOUN - 홈</title>
+  <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+  
+  </head>
+<body>
+
+  <header class="main-header">
+    <div class="logo">
+        <img src="images/logo.png" alt="HEYCOUN">
+    </div>
+    <div class="user-menu">
+      <span class="welcome-msg" id="header-username">반가워요!</span>
+      <a href="intro.html" class="logout-link" onclick="handleLogout()">로그아웃</a>
+    </div>
+  </header>
+
+  <main class="main-wrapper">
+
+    <section class="top-section">
+      <a href="chat.html" class="action-card">
+        <h3>AI와 채팅하러 가기</h3>
+        <div class="card-icon">
+          <img src="images/chat_icon.png" alt="Chat">
+        </div>
+      </a>
+      
+      <a href="paragraphs.html" class="action-card">
+        <h3>나의 문단들 만들러가기</h3>
+        <div class="card-icon">
+          <img src="images/write_icon.png" alt="Write">
+        </div>
+      </a>
+      
+      <div class="guide-section">
+        <div class="guide-header">
+          <span>이용 가이드</span>
+          <a href="guide.html">전체보기 ></a>
+        </div>
+        <nav class="guide-nav">
+          <a href="#" class="guide-item">
+            <span class="guide-icon">🗓️</span>캘린더
+          </a>
+          <a href="#" class="guide-item">
+            <span class="guide-icon">👥</span>커뮤니티
+          </a>
+          <a href="#" class="guide-item">
+            <span class="guide-icon">👤</span>마이페이지
+          </a>
+        </nav>
+      </div>
+    </section>
+
+    <section class="content-section">
+        <div class="section-header">
+            <h2>📄 나의 프로젝트</h2>
+            <button class="btn-add" id="open-project-modal">＋</button>
+        </div>
+      
+      <div class="project-list">
+        <div class="project-card">
+            <div class="proj-info">
+                <span class="proj-date">2022.03</span>
+                <span class="proj-cat">학교</span>
+                <span class="proj-title">식품 알러지 권고 홍보 프로젝트</span>
+            </div>
+            <div class="proj-tags">
+                <span class="tag">기획</span>
+                <span class="tag">디자인</span>
+            </div>
+        </div>
+        
+        <div class="project-card">
+            <div class="proj-info">
+                <span class="proj-date">2023.11</span>
+                <span class="proj-cat">학교</span>
+                <span class="proj-title">AI 활용 심리상담 앱 제작</span>
+            </div>
+            <div class="proj-tags">
+                <span class="tag">기획</span>
+                <span class="tag">프론트엔드</span>
+            </div>
+        </div>
+
+        <div class="project-card">
+            <div class="proj-info">
+                <span class="proj-date">2024.09</span>
+                <span class="proj-cat">대외활동</span>
+                <span class="proj-title">UNITY 활용 게임 제작</span>
+            </div>
+            <div class="proj-tags">
+                <span class="tag">기획</span>
+                <span class="tag">디자인</span>
+                <span class="tag">백엔드</span>
+            </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="content-section">
+        <div class="section-header">
+            <h2>⚙️ 나의 역량</h2>
+            <button class="btn-add" id="open-skill-modal">＋</button>
+        </div>
+      
+      <div class="skill-container">
+        <div class="skill-item"><img src="images/icon_pp.png" alt="PPT"></div>
+        <div class="skill-item"><img src="images/icon_excel.png" alt="Excel"></div>
+        <div class="skill-item"><img src="images/icon_html.png" alt="HTML"></div>
+        <div class="skill-item"><img src="images/icon_cpp.png" alt="C++"></div>
+        <div class="skill-item"><img src="images/icon_figma.png" alt="Figma"></div>
+      </div>
+    </section>
+
+    <section class="content-section">
+        <div class="section-header">
+            <h2>📜 자격증</h2>
+            <button class="btn-add" id="open-cert-modal">＋</button>
+        </div>
+
+        <div class="cert-list">
+            <div class="cert-card">
+                <span class="cert-title">GTQ 1급</span>
+                <span class="cert-date">2022.03.21</span>
+            </div>
+            <div class="cert-card">
+                <span class="cert-title">ITQ 엑셀 A등급</span>
+                <span class="cert-date">2023.09.01</span>
+            </div>
+            <div class="cert-card">
+                <span class="cert-title">ITQ 파워포인트 A등급</span>
+                <span class="cert-date">2023.09.01</span>
+            </div>
+            <div class="cert-card">
+                <span class="cert-title">리눅스마스터 2급</span>
+                <span class="cert-date">2024.11.22</span>
+            </div>
+        </div>
+    </section>
+
+  </main>
+
+  <div class="modal-overlay" id="project-modal-overlay">
+    <div class="modal-content">
+        <button class="modal-close-btn" id="modal-close-btn">&times;</button>
+        <h2>📄 프로젝트 추가</h2>
+        <p class="modal-subtitle">내가 했던 모든 활동들을 기록해보세요</p>
+
+        <form>
+            <div class="form-group">
+                <div class="form-group-header">
+                    <label>구분</label>
+                    <button type="button" class="btn-add-option">+ 구분 추가</button>
+                </div>
+                <div class="radio-group">
+                    <input type="radio" id="cat-school" name="category" value="school" checked>
+                    <label for="cat-school" class="radio-label">학교</label>
+                    
+                    <input type="radio" id="cat-external" name="category" value="external">
+                    <label for="cat-external" class="radio-label">대외활동</label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="project-name">프로젝트명</label>
+                <input type="text" id="project-name" class="full-width-input" placeholder="예: 식품 알러지 홍보 프로젝트">
+            </div>
+
+            <div class="form-group">
+                <div class="form-group-header">
+                    <label>담당 파트</label>
+                    <button type="button" class="btn-add-option">+ 파트 추가</button>
+                </div>
+                <div class="radio-group">
+                    <input type="radio" id="part-plan" name="part" value="plan">
+                    <label for="part-plan" class="radio-label">기획</label>
+                    <input type="radio" id="part-design" name="part" value="design">
+                    <label for="part-design" class="radio-label">디자인</label>
+                    <input type="radio" id="part-front" name="part" value="front">
+                    <label for="part-front" class="radio-label">프론트엔드</label>
+                </div>
+            </div>
+
+            <button type="submit" class="modal-submit-btn">추가하기</button>
+        </form>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="cert-modal-overlay">
+    <div class="modal-content">
+      <button class="modal-close-btn" id="cert-modal-close-btn">&times;</button>
+      <h2>📜 자격증 추가</h2>
+      <p class="modal-subtitle">취득한 자격증 정보를 입력해주세요</p>
+
+      <form>
+        <div class="form-group">
+          <label>취득일자</label>
+          <div class="date-inputs">
+            <input type="text" placeholder="YYYY" class="date-input"> 년
+            <input type="text" placeholder="MM" class="date-input"> 월
+            <input type="text" placeholder="DD" class="date-input"> 일
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="cert-name">자격증 명</label>
+          <input type="text" id="cert-name" class="full-width-input" placeholder="예: 정보처리기사">
+        </div>
+        <button type="submit" class="modal-submit-btn">추가하기</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="skill-modal-overlay">
+    <div class="modal-content" style="width: 600px;">
+      <button class="modal-close-btn" id="skill-modal-close-btn">&times;</button>
+      <h2>⚙️ 역량 선택</h2>
+      <p class="modal-subtitle">사용 가능한 툴이나 언어를 선택해주세요</p>
+
+      <div class="skill-icon-grid">
+        <div class="skill-icon-item"><img src="images/icon_pp.png"></div>
+        <div class="skill-icon-item"><img src="images/icon_excel.png"></div>
+        <div class="skill-icon-item"><img src="images/icon_html.png"></div>
+        <div class="skill-icon-item"><img src="images/icon_cpp.png"></div>
+        <div class="skill-icon-item"><img src="images/icon_figma.png"></div>
+        <div class="skill-icon-item"><img src="images/icon_ai.png"></div>
+        <div class="skill-icon-item"><img src="images/icon_ps.png"></div>
+        <div class="skill-icon-item"><img src="images/icon_python.png"></div>
+        <div class="skill-icon-item"><img src="images/icon_react.png"></div>
+        <div class="skill-icon-item"><img src="images/icon_java.png"></div>
+      </div>
+      <button type="button" class="modal-submit-btn" id="skill-submit-btn">선택 완료</button>
+    </div>
+  </div>
+
+  <script>
+    window.onload = function() {
+        const savedName = localStorage.getItem('username') || '김서현'; 
+        document.getElementById('header-username').innerText = `${savedName}님, 안녕하세요!`;
+    };
+
+    function handleLogout() {
+        localStorage.removeItem('isHeycounLoggedIn');
+        alert('로그아웃 되었습니다.');
+    }
+
+    function setupModal(triggerId, overlayId, closeId) {
+        const trigger = document.getElementById(triggerId);
+        const overlay = document.getElementById(overlayId);
+        const close = document.getElementById(closeId);
+
+        if(trigger && overlay) {
+            trigger.addEventListener('click', () => overlay.classList.add('is-active'));
+        }
+        if(close && overlay) {
+            close.addEventListener('click', () => overlay.classList.remove('is-active'));
+        }
+        if(overlay) {
+            overlay.addEventListener('click', (e) => {
+                if(e.target === overlay) overlay.classList.remove('is-active');
+            });
+        }
+    }
+
+    setupModal('open-project-modal', 'project-modal-overlay', 'modal-close-btn');
+    setupModal('open-cert-modal', 'cert-modal-overlay', 'cert-modal-close-btn');
+    setupModal('open-skill-modal', 'skill-modal-overlay', 'skill-modal-close-btn');
+    
+    document.getElementById('skill-submit-btn').addEventListener('click', () => {
+        document.getElementById('skill-modal-overlay').classList.remove('is-active');
+    });
+
+    const skillIcons = document.querySelectorAll('.skill-icon-item');
+    skillIcons.forEach(icon => {
+        icon.addEventListener('click', () => icon.classList.toggle('selected'));
+    });
+  </script>
+</body>
+</html>

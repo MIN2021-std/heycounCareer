@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HEYCOUN</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div class="top-area">
+        <header>
+            <div class="header-inner">
+                <div class="logo">
+                    <img src="images/logo.png" alt="HEYCOUN">
+                </div>
+                <nav>
+                    <ul class="nav-list">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">프로젝트 소개</a> 
+                            <div class="dropdown-wrapper" id="dropdown-target"> </div>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">팀원 소개</a>
+                            <div class="dropdown-wrapper" id="team-target"> </div>
+                        </li>
+                    </ul>
+                </nav>
+                <a href="signup.html" class="btn-signup">회원가입</a>
+            </div>
+        </header>
+
+        <section class="hero-section">
+            <div class="hero-content">
+                <div class="text-area">
+                    <h1>대화를 통해 당신의 경험을 발견하고,<br>
+                    포트폴리오 문단으로 정리해주는<br>
+                    AI 커리어 코치</h1>
+                    <p class="subtitle">당신의 이야기를 가장 설득력 있게 들려줄 수 있도록</p>
+
+                    <div class="chat-bubbles">
+                        <div class="bubble b1">오늘도 나에게 한 발자국 더 가까워질 준비됐나요? 어떤 주제로 대화를..</div>
+                        <div class="bubble b2">2년전에 학교 비교과 프로그램으로 어도비 관련해서 배웠던 적이 있는..</div>
+                        <div class="bubble b3">그 교육 프로그램에 대해 자세히 들어가볼게요. 먼저, 비교과 프로..</div>
+                    </div>
+                </div>
+
+                <div class="image-area">
+                    <img src="images/phone.png" alt="App Mockup" class="phone-img">
+                </div>
+            </div>
+        </section>
+    </div> 
+    <main>
+        <section class="features-section">
+            <div class="features-header">
+                <h2>헤이카운이 추천드리는 헤이!포트폴만의 두가지 기능</h2>
+                <p>STAR 기법으로 나만의 포트폴리오를 만들어보세요</p>
+            </div>
+
+            <div class="cards-wrap">
+    
+            <div class="feature-card" onclick="checkLogin('chat')">
+                <h3>AI와 채팅하러 가기</h3>
+                <div class="card-icon">
+                    <img src="images/chat_icon.png" alt="Chat">
+                </div>
+            </div>
+
+            <div class="feature-card" onclick="checkLogin('write')">
+                <h3>나의 문단들 만들러가기</h3>
+                <div class="card-icon">
+                    <img src="images/write_icon.png" alt="Write">
+                </div>
+            </div>
+            </div>
+            
+            <div class="footer-character">
+                <img src="images/rabbit_footer.png" alt="Rabbit Character">
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2025-HEYCOUN All Rights Reserved</p>
+    </footer>
+
+    <script>
+      fetch('project_explain.html')
+          .then(response => response.text())
+          .then(data => {
+              document.getElementById('dropdown-target').innerHTML = data;
+          })
+          .catch(error => console.error('Error loading the file:', error));
+    </script>
+
+    <script>
+        fetch('project_explain.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('dropdown-target').innerHTML = data;
+            });
+
+        fetch('team_explain.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('team-target').innerHTML = data;
+            });
+
+        let isLoggedIn = localStorage.getItem('isHeycounLoggedIn') === 'true';
+        
+        function checkLogin(serviceType) {
+            if (!isLoggedIn) {
+                alert("회원가입이 필요한 서비스입니다...");
+                location.href = 'signup.html';
+                } else {
+                    if (serviceType === 'chat') {
+                        location.href = 'chat.html'; 
+                    } else if (serviceType === 'write') {
+                location.href = 'paragraphs.html'; 
+            }
+        }
+    }
+    </script>
+</body>
+</html>
