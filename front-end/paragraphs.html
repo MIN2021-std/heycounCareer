@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>HEYCOUN - 나의 문단들</title>
+  <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" rel="stylesheet" />
+  <style>
+    :root {
+      --deep: #1E1F31;
+      --accent: #7460F0;
+      --bg-light-gray: #F8F9FA;
+      --border-gray: #E0E0E0;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: "Pretendard", "Noto Sans KR", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: #FFFFFF;
+      -webkit-font-smoothing: antialiased;
+      color: var(--deep);
+      position: relative; 
+      overflow-x: hidden;
+      min-height: 100vh;
+      padding-bottom: 90px; 
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .page-wrapper {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 60px;
+    }
+
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+    }
+
+    .page-header h1 {
+      font-size: 2.5rem;
+      font-weight: 800;
+    }
+
+    .home-button {
+      font-size: 0.95rem;
+      color: #555;
+      text-decoration: none;
+      padding: 8px 10px;
+      border-radius: 8px;
+      transition: background 0.2s;
+      font-weight: 600;
+    }
+
+    .home-button:hover {
+      background: var(--bg-light-gray);
+    }
+
+    .category-nav {
+      display: flex;
+      gap: 30px;
+      margin-bottom: 30px;
+      border-bottom: 1px solid var(--border-gray);
+      padding-bottom: 20px;
+    }
+    
+    .category-nav a {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #AAAAAA;
+      padding: 4px;
+      transition: color 0.2s;
+    }
+    
+    .category-nav a:hover {
+        color: var(--accent);
+    }
+
+    .category-nav a.is-active {
+      color: var(--accent);
+      font-weight: 800; 
+    }
+
+    .search-bar {
+      position: relative;
+      width: 100%;
+      max-width: 600px; 
+      margin: 0 auto 40px auto; 
+    }
+    
+    .search-bar input {
+      width: 100%;
+      padding: 14px 45px 14px 24px;
+      border: 1px solid var(--border-gray);
+      border-radius: 999px;
+      font-size: 1rem;
+    }
+    
+    .search-bar input:focus {
+      outline: none;
+      border-color: var(--deep);
+    }
+
+    .search-bar button {
+      position: absolute;
+      right: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 1.5rem;
+      color: #888;
+    }
+
+    .paragraph-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr); 
+      gap: 20px;
+    }
+
+    .paragraph-card {
+      background: #FFFFFF;
+      border-radius: 20px;
+      padding: 30px; 
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 420px; 
+    }
+
+    .paragraph-card h3 {
+      font-size: 1.25rem; 
+      font-weight: 700;
+      margin-bottom: 16px; 
+    }
+    
+    .paragraph-card p {
+      font-size: 0.95rem;
+      line-height: 1.7;
+      color: #333;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 12; 
+      line-clamp: 12;
+      -webkit-box-orient: vertical;
+    }
+    
+    .card-footer {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.85rem;
+      color: #888;
+      margin-top: 25px; 
+      padding-top: 15px; 
+      border-top: 1px solid var(--border-gray);
+    }
+
+    .cta-image-button {
+      position: fixed;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80%;
+      transition: transform 0.2s ease;
+      z-index: 100; 
+      max-width: 900px;
+      line-height: 0;
+    }
+    
+
+    .cta-image-button img {
+      width: 100%; 
+      height: auto;
+      display: block; 
+    }
+
+    /* 편집 모달 */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+
+    .modal-overlay.is-active {
+      display: flex;
+    }
+
+    .modal-content {
+      background: white;
+      border-radius: 20px;
+      padding: 40px;
+      max-width: 600px;
+      width: 90%;
+      max-height: 80vh;
+      overflow-y: auto;
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+    }
+
+    .modal-header h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+
+    .modal-close {
+      font-size: 2rem;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: #888;
+    }
+
+    .edit-form {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .edit-form label {
+      font-weight: 600;
+      margin-bottom: 8px;
+      display: block;
+    }
+
+    .edit-form input,
+    .edit-form textarea {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid var(--border-gray);
+      border-radius: 8px;
+      font-size: 1rem;
+      font-family: inherit;
+    }
+
+    .edit-form textarea {
+      min-height: 200px;
+      resize: vertical;
+    }
+
+    .modal-buttons {
+      display: flex;
+      gap: 10px;
+      justify-content: flex-end;
+      margin-top: 20px;
+    }
+
+    .btn {
+      padding: 12px 24px;
+      border-radius: 8px;
+      border: none;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-save {
+      background: var(--accent);
+      color: white;
+    }
+
+    .btn-save:hover {
+      background: #5a4dd0;
+    }
+
+    .btn-delete {
+      background: #ff4444;
+      color: white;
+    }
+
+    .btn-delete:hover {
+      background: #cc0000;
+    }
+
+    .btn-cancel {
+      background: #e0e0e0;
+      color: #333;
+    }
+
+    .btn-cancel:hover {
+      background: #d0d0d0;
+    }
+
+    .paragraph-card {
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    .paragraph-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
+    }
+
+  </style>
+</head>
+<body>
+
+  <div class="page-wrapper">
+    <header class="page-header">
+      <h1>나의 문단들</h1>
+      <a href="/home/" class="home-button">홈으로</a>
+    </header>
+
+    <nav class="category-nav">
+      <a href="#" class="is-active">전체</a>
+      <a href="#">학교 활동</a>
+      <a href="#">동아리 활동</a>
+      <a href="#">대외 활동</a>
+      <a href="#">자기 계발</a>
+      <a href="#">기타</a>
+    </nav>
+
+    <form class="search-bar" id="search-form">
+      <input type="text" id="search-input" placeholder="검색어를 입력하세요">
+      <button type="submit">🔍</button>
+    </form>
+
+    <main class="paragraph-grid">
+      <div class="paragraph-card">
+        <div>
+          <h3>데이터 기반 UX 설계</h3>
+          <p>저는 A/B 테스트, 히트맵 분석 및 GA, Hotjar 등 정량적/정성적 데이터를 활용해 사용자 행동 패턴을 깊이 있게 파악합니다. 이를 바탕으로 핵심 사용자 여정(User Journey)의 문제점을 명확히 정의하고, 가설 기반의 디자인 솔루션을 빠르게 도출하여 프로토타입을 검증했습니다. 구체적으로 전환율(CVR), 재방문율, 사용자당 매출(ARPU) 등 핵심 비즈니스 지표를...</p>
+        </div>
+        <div class="card-footer">
+          <span>2025-10-11</span>
+          <span>320자</span>
+        </div>
+      </div>
+      
+      <div class="paragraph-card">
+        <div>
+          <h3>AI 심리상담 앱 기획</h3>
+          <p>AI 챗봇을 활용한 24시간 심리 상담 서비스 '마음봇'을 기획했습니다. 타겟 유저 인터뷰를 통해 '비용 부담'과 '시간 제약'이라는 핵심 페인 포인트를 발견했습니다. 이를 해결하기 위해 구독형 모델과 LLM 기반의 공감형 대화 시나리오를 설계하여, 초기 MVP 단계에서 10%의 높은 리텐션율을 달성했습니다.</p>
+        </div>
+        <div class="card-footer">
+          <span>2024-11-20</span>
+          <span>180자</span>
+        </div>
+      </div>
+
+      <div class="paragraph-card">
+        <div>
+          <h3>교내 앱/웹 개발 동아리 창립</h3>
+          <p>개발자와 디자이너 간의 협업 경험 부족 문제를 해결하기 위해 'Co-Up' 동아리를 창립했습니다. Git-flow, Figma, Notion을 표준 협업 툴로 도입하고, 2주 단위 스프린트 방식으로 3개의 사이드 프로젝트(학교 식단 알리미, 중고책 거래)를 성공적으로 배포했습니다. 이 경험을 통해 프로젝트 관리(PM) 역량을 길렀습니다.</p>
+        </div>
+        <div class="card-footer">
+          <span>2024-03-01</span>
+          <span>210자</span>
+        </div>
+      </div>
+
+      <div class="paragraph-card">
+        <div>
+          <h3>리눅스마스터 2급 자격증 취득</h3>
+          <p>백엔드 개발에 대한 이해를 높이고자 리눅스마스터 2급 자격증을 취득했습니다. OS의 기본 구조, 명령어, 쉘 스크립트 작성법을 학습하며 서버 환경에 대한 기초를 다졌습니다. 특히 AWS EC2 인스턴스에 직접 Nginx와 Node.js 환경을 구축하고 배포 자동화 파이프라인을 설정해보는 실습을 진행했습니다.</p>
+        </div>
+        <div class="card-footer">
+          <span>2025-01-15</span>
+          <span>195자</span>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- 편집 모달 -->
+  <div class="modal-overlay" id="edit-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>문단 편집</h2>
+        <button class="modal-close" id="modal-close">&times;</button>
+      </div>
+      <form class="edit-form" id="edit-form">
+        <div>
+          <label for="edit-title">제목</label>
+          <input type="text" id="edit-title" required>
+        </div>
+        <div>
+          <label for="edit-content">내용</label>
+          <textarea id="edit-content" required></textarea>
+        </div>
+        <div class="modal-buttons">
+          <button type="button" class="btn btn-delete" id="delete-btn">삭제</button>
+          <button type="button" class="btn btn-cancel" id="cancel-btn">취소</button>
+          <button type="submit" class="btn btn-save">저장</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <a href="chat.html" class="cta-image-button">
+    <img src="images/chat_btn.png" alt="채팅하러 가기">
+  </a>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const navLinks = document.querySelectorAll('.category-nav a');
+      navLinks.forEach(link => {
+        link.addEventListener('click', (event) => {
+          event.preventDefault(); 
+          navLinks.forEach(navLink => {
+            navLink.classList.remove('is-active');
+          });
+          event.currentTarget.classList.add('is-active');
+        });
+      });
+
+      // 모달 관련
+      const editModal = document.getElementById('edit-modal');
+      const modalClose = document.getElementById('modal-close');
+      const cancelBtn = document.getElementById('cancel-btn');
+      const editForm = document.getElementById('edit-form');
+      const deleteBtn = document.getElementById('delete-btn');
+      const editTitle = document.getElementById('edit-title');
+      const editContent = document.getElementById('edit-content');
+      let currentParagraphId = null;
+
+      // 모달 닫기
+      function closeModal() {
+        editModal.classList.remove('is-active');
+        currentParagraphId = null;
+      }
+
+      modalClose.addEventListener('click', closeModal);
+      cancelBtn.addEventListener('click', closeModal);
+      editModal.addEventListener('click', (e) => {
+        if (e.target === editModal) closeModal();
+      });
+
+      // DB에서 저장된 문단 불러오기
+      async function loadParagraphs() {
+        try {
+          const res = await fetch('/chats/api/paragraphs/');
+          if (res.ok) {
+            const paragraphs = await res.json();
+            const paragraphGrid = document.querySelector('.paragraph-grid');
+            
+            // 기존 하드코딩된 카드들은 유지하고, DB 데이터를 앞에 추가
+            paragraphs.forEach((paragraph, index) => {
+              const date = new Date(paragraph.created_at);
+              const dateStr = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+              
+              const newCard = document.createElement('div');
+              newCard.className = 'paragraph-card';
+              newCard.dataset.id = paragraph.id;
+              if (index === 0) {
+                newCard.style.border = '2px solid #7460F0'; // 최신 문단 강조
+              }
+              newCard.innerHTML = `
+                <div>
+                  <h3>${paragraph.title}</h3>
+                  <p>${paragraph.content}</p>
+                </div>
+                <div class="card-footer">
+                  <span>${dateStr}</span>
+                  <span>${paragraph.char_count}자</span>
+                </div>
+              `;
+              
+              // 카드 클릭 이벤트
+              newCard.addEventListener('click', () => {
+                currentParagraphId = paragraph.id;
+                editTitle.value = paragraph.title;
+                editContent.value = paragraph.content;
+                editModal.classList.add('is-active');
+              });
+              
+              paragraphGrid.insertBefore(newCard, paragraphGrid.firstChild);
+            });
+          }
+        } catch (err) {
+          console.error('문단 불러오기 실패:', err);
+        }
+      }
+
+      // 문단 수정
+      editForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        try {
+          if (currentParagraphId) {
+            // DB에 있는 문단 수정
+            const res = await fetch(`/chats/api/paragraphs/${currentParagraphId}/`, {
+              method: 'PUT',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                title: editTitle.value,
+                content: editContent.value
+              })
+            });
+
+            if (res.ok) {
+              closeModal();
+              location.reload();
+            } else {
+              alert('수정에 실패했습니다.');
+            }
+          } else {
+            // 하드코딩된 카드 → DB에 새로 저장
+            const res = await fetch('/chats/api/paragraphs/', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                title: editTitle.value,
+                content: editContent.value
+              })
+            });
+
+            if (res.ok) {
+              closeModal();
+              location.reload();
+            } else {
+              alert('저장에 실패했습니다.');
+            }
+          }
+        } catch (err) {
+          alert('네트워크 오류가 발생했습니다.');
+        }
+      });
+
+      // 문단 삭제
+      deleteBtn.addEventListener('click', async () => {
+        if (!confirm('정말 삭제하시겠습니까?')) return;
+
+        if (currentParagraphId) {
+          // DB에 있는 문단 삭제
+          try {
+            const res = await fetch(`/chats/api/paragraphs/${currentParagraphId}/`, {
+              method: 'DELETE'
+            });
+
+            if (res.ok) {
+              closeModal();
+              location.reload();
+            } else {
+              alert('삭제에 실패했습니다.');
+            }
+          } catch (err) {
+            alert('네트워크 오류가 발생했습니다.');
+          }
+        } else if (currentStaticCard) {
+          // 하드코딩된 카드 삭제 (DOM에서만 제거)
+          currentStaticCard.remove();
+          closeModal();
+          currentStaticCard = null;
+        }
+      });
+      
+      loadParagraphs();
+
+      // 검색 기능
+      const searchForm = document.getElementById('search-form');
+      const searchInput = document.getElementById('search-input');
+
+      searchForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        performSearch();
+      });
+
+      searchInput.addEventListener('input', () => {
+        if (searchInput.value === '') {
+          // 검색어가 비어있으면 모든 카드 표시
+          document.querySelectorAll('.paragraph-card').forEach(card => {
+            card.style.display = 'block';
+          });
+        } else {
+          performSearch();
+        }
+      });
+
+      function performSearch() {
+        const query = searchInput.value.toLowerCase().trim();
+        const cards = document.querySelectorAll('.paragraph-card');
+        
+        cards.forEach(card => {
+          const title = card.querySelector('h3').textContent.toLowerCase();
+          const content = card.querySelector('p').textContent.toLowerCase();
+          
+          // 제목이나 내용에 검색어가 포함되어 있으면 표시
+          if (title.includes(query) || content.includes(query)) {
+            card.style.display = 'block';
+          } else {
+            card.style.display = 'none';
+          }
+        });
+      }
+
+      // 하드코딩된 카드들에도 클릭 이벤트 추가
+      let currentStaticCard = null;
+      document.querySelectorAll('.paragraph-card').forEach(card => {
+        if (!card.dataset.id) { // DB에서 온 카드가 아닌 경우만
+          card.addEventListener('click', () => {
+            const titleEl = card.querySelector('h3');
+            const contentEl = card.querySelector('p');
+            
+            currentParagraphId = null; // DB ID 없음
+            currentStaticCard = card; // 현재 하드코딩 카드 저장
+            editTitle.value = titleEl.textContent;
+            editContent.value = contentEl.textContent;
+            editModal.classList.add('is-active');
+            
+            // 삭제 버튼 텍스트 변경
+            deleteBtn.textContent = '삭제';
+            deleteBtn.style.display = 'block';
+          });
+        }
+      });
+
+      // 편집 폼 제출 시 원래대로
+      editForm.addEventListener('submit', () => {
+        deleteBtn.textContent = '삭제';
+        currentStaticCard = null;
+      });
+    });
+  </script>
+</body>
+</html>

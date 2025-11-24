@@ -1,0 +1,1074 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>HEYCOUN - 포트폴리오</title>
+  <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" rel="stylesheet" />
+  <style>
+    :root {
+      --deep: #1E1F31;
+      --accent: #7460F0;
+      --bg-light-gray: #F8F9FA;
+      --border-gray: #E0E0E0;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: "Pretendard", "Noto Sans KR", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: #FFFFFF;
+      -webkit-font-smoothing: antialiased;
+      color: var(--deep);
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .main-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 60px;
+      border-bottom: 1px solid var(--border-gray);
+    }
+    
+    .main-header .logo {
+      font-weight: 800;
+      font-size: 1.15rem;
+      color: var(--deep);
+    }
+
+    .main-header .logout-link {
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: #666;
+    }
+
+    .main-wrapper {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 60px;
+    }
+
+    .content-section {
+      background: var(--bg-light-gray);
+      border-radius: 20px;
+      padding: 24px;
+      margin-bottom: 20px;
+    }
+    
+    .content-section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    
+    .content-section-header h2 {
+      font-size: 1.25rem;
+      display: flex;
+      align-items: center;
+    }
+
+    .content-section-header .icon {
+      font-size: 1.5rem;
+      margin-right: 8px;
+    }
+
+    .content-section-header .btn-add {
+      font-size: 1.5rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .project-list-item {
+      display: grid;
+      grid-template-columns: 100px 100px 1fr auto;
+      gap: 16px;
+      align-items: center;
+      padding: 12px 0;
+      font-size: 0.95rem;
+    }
+    
+    .project-list-item:not(:last-child) {
+      border-bottom: 1px solid #E0E0E0;
+    }
+
+    .project-list-item .date {
+      color: #555;
+    }
+    
+    .project-list-item .category {
+      font-weight: 600;
+    }
+    
+    .project-list-item .title {
+      font-weight: 500;
+    }
+
+    .project-tags {
+      display: flex;
+      gap: 6px;
+    }
+    
+    .tag {
+      font-size: 0.8rem;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 999px;
+      color: var(--deep);
+    }
+
+    .skill-icons {
+      display: flex;
+      gap: 30px;
+    }
+    
+    .skill-icons img {
+      width: 48px;
+      height: 48px;
+      object-fit: contain;
+    }
+
+    .cert-list-item {
+      display: grid;
+      grid-template-columns: 120px 1fr;
+      padding: 12px 0;
+      font-size: 0.95rem;
+    }
+
+    .cert-list-item:not(:last-child) {
+      border-bottom: 1px solid #E0E0E0;
+    }
+    
+    .cert-list-item .date {
+      color: #555;
+    }
+    
+    .cert-list-item .title {
+      font-weight: 500;
+    }
+
+    .modal-overlay {
+      position: fixed; 
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      
+      visibility: hidden;
+      opacity: 0;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+
+    .modal-overlay.is-active {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    .modal-content {
+      background: #FFFFFF;
+      padding: 24px 30px;
+      border-radius: 20px;
+      width: 630px;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+      position: relative;
+      
+      transform: translateY(20px);
+      transition: transform 0.3s ease;
+    }
+
+    .modal-overlay.is-active .modal-content {
+      transform: translateY(0);
+    }
+
+    .modal-content h2 {
+      font-size: 1.25rem;
+      display: flex;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .modal-content h2 .icon {
+      font-size: 1.5rem;
+      margin-right: 8px;
+    }
+
+    .modal-subtitle {
+      font-size: 0.9rem;
+      color: #666;
+      margin-bottom: 24px;
+    }
+
+    .modal-close-btn {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: none;
+      border: none;
+      font-size: 2rem;
+      color: #888;
+      cursor: pointer;
+      line-height: 1;
+    }
+
+    .modal-form .form-group {
+      margin-bottom: 20px;
+    }
+
+    .modal-form label {
+      display: block;
+      font-weight: 600;
+      font-size: 0.9rem;
+      margin-bottom: 10px;
+    }
+
+    .date-inputs {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .date-inputs .date-input {
+      width: 80px;
+      padding: 10px;
+      border: 1px solid var(--border-gray);
+      border-radius: 8px;
+      text-align: center;
+    }
+
+    .full-width-input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid var(--border-gray);
+      border-radius: 8px;
+    }
+
+    .radio-group {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .radio-group input[type="radio"],
+    .radio-group input[type="checkbox"] {
+      display: none; 
+    }
+
+    .radio-group .radio-label {
+      padding: 8px 14px;
+      border: 1px solid var(--border-gray);
+      border-radius: 999px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: #555;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .radio-group input[type="radio"]:checked + .radio-label,
+    .radio-group input[type="checkbox"]:checked + .radio-label {
+      background: #EBE9FD;
+      border-color: #C0B8F9;
+      color: var(--deep);
+      font-weight: 600;
+    }
+
+    .modal-submit-btn {
+      width: 100%;
+      padding: 14px;
+      background: var(--deep);
+      color: #FFFFFF;
+      border: none;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      margin-top: 10px;
+      transition: background 0.2s;
+    }
+
+    .modal-submit-btn:hover {
+      background: #333;
+    }
+
+    .form-group-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .form-group-header label {
+      margin-bottom: 0;
+    }
+
+    .btn-add-option {
+      background: none;
+      border: none;
+      color: #888;
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+    }
+
+    .modal-content.small-modal {
+      width: 380px;
+    }
+
+    .color-palette {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .color-dot {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      cursor: pointer;
+      border: 3px solid transparent;
+      transition: border-color 0.2s;
+      box-sizing: border-box;
+    }
+
+    .color-dot:hover,
+    .color-dot.selected { 
+      border-color: #888;
+    }
+
+    .modal-content.small-modal .modal-submit-btn {
+      width: auto;
+      padding: 12px 40px; 
+      display: block;
+      margin: 20px auto 0 auto; 
+    }
+
+    .modal-content.small-modal h2 {
+      display: flex;
+      align-items: center;
+    }
+
+    .modal-content.small-modal h2 .icon {
+      font-size: 1.25rem;
+      margin-right: 8px;
+    }
+
+    .skill-icon-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 20px;
+      padding: 20px 0;
+    }
+
+    .skill-icon-item {
+      background: var(--bg-light-gray);
+      border: 1px solid var(--border-gray);
+      border-radius: 12px;
+      padding: 24px; 
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .skill-icon-item img {
+      width: 50px; 
+      height: 50px;
+      object-fit: contain;
+    }
+
+    .skill-icon-item:hover {
+      border-color: #AAAAAA;
+      background: #F1F3F5;
+    }
+
+    .skill-icon-item.selected {
+      border-color: var(--accent); 
+      background: #EBE9FD;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 20px;
+      color: #999;
+    }
+  </style>
+</head>
+<body>
+
+  <header class="main-header">
+    <div class="logo">HEYCOUN</div>
+    <a href="/home/" class="logout-link">← 홈으로</a>
+  </header>
+
+  <main class="main-wrapper">
+
+    <section class="content-section">
+      <div class="content-section-header">
+        <h2><span class="icon">📄</span>나의 프로젝트들</h2>
+        <span class="btn-add" id="open-project-modal" style="cursor: pointer;">➕</span>
+      </div>
+      
+      <div class="project-list" id="projects-container">
+        <div class="empty-state">아직 프로젝트가 없습니다.</div>
+      </div>
+    </section>
+
+    <section class="content-section">
+      <div class="content-section-header">
+        <h2><span class="icon">⚙️</span>나의 역량들</h2>
+        <span class="btn-add" id="open-skill-modal" style="cursor: pointer;">➕</span>
+      </div>
+      
+      <div class="skill-icons" id="skills-container">
+        <div class="empty-state">아직 역량이 없습니다.</div>
+      </div>
+    </section>
+
+    <section class="content-section">
+      <div class="content-section-header">
+        <h2><span class="icon">📜</span>나의 자격증들</h2>
+        <span class="btn-add" id="open-cert-modal" style="cursor: pointer;">➕</span>
+      </div>
+
+      <div class="cert-list" id="certs-container">
+        <div class="empty-state">아직 자격증이 없습니다.</div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- 프로젝트 모달 -->
+  <div class="modal-overlay" id="project-modal-overlay">
+    <div class="modal-content">
+      <button class="modal-close-btn" id="modal-close-btn">&times;</button>
+      <h2><span class="icon">📄</span>나의 프로젝트들</h2>
+      <p class="modal-subtitle">내가 했던 모든 활동들을 적어보세요</p>
+
+      <form class="modal-form" id="home-project-form">
+        <div class="form-group">
+          <label>날짜</label>
+          <div class="date-inputs">
+            <input type="text" placeholder="YYYY" class="date-input" id="project-year" maxlength="4" required> 년
+            <input type="text" placeholder="MM" class="date-input" id="project-month" maxlength="2" required> 월
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="form-group-header">
+            <label>구분</label>
+            <button type="button" class="btn-add-option" data-modal-title="구분 추가">+ 추가</button>
+          </div>
+          <div class="radio-group" id="category-group">
+            <input type="radio" id="cat-school" name="category" value="학교" checked>
+            <label for="cat-school" class="radio-label">학교</label>
+            
+            <input type="radio" id="cat-external" name="category" value="대외활동">
+            <label for="cat-external" class="radio-label">대외활동</label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="project-name">프로젝트명</label>
+          <input type="text" id="project-name" class="full-width-input" required>
+        </div>
+
+        <div class="form-group">
+          <div class="form-group-header">
+            <label>파트</label>
+            <button type="button" class="btn-add-option" data-modal-title="파트 추가">+ 추가</button>
+          </div>
+          <div class="radio-group" id="part-group">
+            <input type="checkbox" id="part-plan" name="part" value="기획">
+            <label for="part-plan" class="radio-label" style="background: #EBE9FD;">기획</label>
+            
+            <input type="checkbox" id="part-design" name="part" value="디자인">
+            <label for="part-design" class="radio-label" style="background: #E0F2FE;">디자인</label>
+
+            <input type="checkbox" id="part-front" name="part" value="프론트엔드">
+            <label for="part-front" class="radio-label" style="background: #D1FAE5;">프론트엔드</label>
+
+            <input type="checkbox" id="part-back" name="part" value="백엔드">
+            <label for="part-back" class="radio-label" style="background: #FEF3C7;">백엔드</label>
+          </div>
+        </div>
+
+        <button type="submit" class="modal-submit-btn">확인</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- 추가 옵션 모달 (구분/파트 추가) -->
+  <div class="modal-overlay" id="add-category-modal">
+    <div class="modal-content small-modal">
+      <button class="modal-close-btn" data-modal-close="add-category-modal">&times;</button>
+      <h2>
+        <span class="icon">☑️</span>
+        <span id="add-category-modal-title">구분</span>
+      </h2>
+      <form class="modal-form" id="add-option-form">
+        <div class="form-group">
+          <label for="new-item-name">이름</label>
+          <input type="text" id="new-item-name" class="full-width-input" required>
+        </div>
+
+        <div class="form-group">
+          <label>색상</label>
+          <div class="color-palette" id="color-palette">
+            <span class="color-dot" style="background-color: #F8BBD0;" data-color="#F8BBD0"></span>
+            <span class="color-dot" style="background-color: #FFD54F;" data-color="#FFD54F"></span>
+            <span class="color-dot" style="background-color: #A5D6A7;" data-color="#A5D6A7"></span>
+            <span class="color-dot" style="background-color: #81C784;" data-color="#81C784"></span>
+            <span class="color-dot" style="background-color: #B3E5FC;" data-color="#B3E5FC"></span>
+            <span class="color-dot" style="background-color: #B39DDB;" data-color="#B39DDB"></span>
+          </div>
+        </div>
+        
+        <button type="submit" class="modal-submit-btn">추가</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- 자격증 모달 -->
+  <div class="modal-overlay" id="cert-modal-overlay">
+    <div class="modal-content">
+      <button class="modal-close-btn" id="cert-modal-close-btn">&times;</button>
+      <h2><span class="icon">📜</span>나의 자격증들</h2>
+      <p class="modal-subtitle">내가 취득한 자격증을 적어보세요</p>
+
+      <form class="modal-form" id="cert-form">
+        <div class="form-group">
+          <label>날짜</label>
+          <div class="date-inputs">
+            <input type="text" placeholder="YYYY" class="date-input" id="cert-year" maxlength="4" required> 년
+            <input type="text" placeholder="MM" class="date-input" id="cert-month" maxlength="2" required> 월
+            <input type="text" placeholder="DD" class="date-input" id="cert-day" maxlength="2" required> 일
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="cert-name">자격증</label>
+          <input type="text" id="cert-name" class="full-width-input" required>
+        </div>
+
+        <button type="submit" class="modal-submit-btn">확인</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- 역량 모달 -->
+  <div class="modal-overlay" id="skill-modal-overlay">
+    <div class="modal-content">
+      <button class="modal-close-btn" id="skill-modal-close-btn">&times;</button>
+      <h2><span class="icon">⚙️</span>나의 역량들</h2>
+      <p class="modal-subtitle">내가 자신있는 프로그램들을 추가해보세요</p>
+
+      <div class="skill-icon-grid">
+        <div class="skill-icon-item" data-skill="PowerPoint" data-icon="icon_pp.png">
+          <img src="images/icon_pp.png" alt="PowerPoint">
+        </div>
+        <div class="skill-icon-item" data-skill="Excel" data-icon="icon_excel.png">
+          <img src="images/icon_excel.png" alt="Excel">
+        </div>
+        <div class="skill-icon-item" data-skill="HTML5" data-icon="icon_html.png">
+          <img src="images/icon_html.png" alt="HTML5">
+        </div>
+        <div class="skill-icon-item" data-skill="C++" data-icon="icon_cpp.png">
+          <img src="images/icon_cpp.png" alt="C++">
+        </div>
+        <div class="skill-icon-item" data-skill="Figma" data-icon="icon_figma.png">
+          <img src="images/icon_figma.png" alt="Figma">
+        </div>
+
+        <div class="skill-icon-item" data-skill="Illustrator" data-icon="icon_ai.png">
+          <img src="images/icon_ai.png" alt="Illustrator">
+        </div>
+        <div class="skill-icon-item" data-skill="Photoshop" data-icon="icon_ps.png">
+          <img src="images/icon_ps.png" alt="Photoshop">
+        </div>
+        <div class="skill-icon-item" data-skill="Lightroom" data-icon="icon_lr.png">
+          <img src="images/icon_lr.png" alt="Lightroom">
+        </div>
+        <div class="skill-icon-item" data-skill="After Effects" data-icon="icon_ae.png">
+          <img src="images/icon_ae.png" alt="After Effects">
+        </div>
+        <div class="skill-icon-item" data-skill="InDesign" data-icon="icon_id.png">
+          <img src="images/icon_id.png" alt="InDesign">
+        </div>
+
+        <div class="skill-icon-item" data-skill="Python" data-icon="icon_python.png">
+          <img src="images/icon_python.png" alt="Python">
+        </div>
+        <div class="skill-icon-item" data-skill="React" data-icon="icon_react.png">
+          <img src="images/icon_react.png" alt="React">
+        </div>
+        <div class="skill-icon-item" data-skill="Java" data-icon="icon_java.png">
+          <img src="images/icon_java.png" alt="Java">
+        </div>
+        <div class="skill-icon-item" data-skill="Swift" data-icon="icon_swift.png">
+          <img src="images/icon_swift.png" alt="Swift">
+        </div>
+        <div class="skill-icon-item" data-skill="Android" data-icon="icon_android.png">
+          <img src="images/icon_android.png" alt="Android">
+        </div>
+      </div>
+
+      <button type="button" class="modal-submit-btn" id="skill-submit-btn">확인</button>
+    </div>
+  </div>
+
+<script>
+const API_URL = 'http://localhost:8000/api';
+let currentModalType = ''; // 'category' or 'part'
+let customCategories = [];
+let customParts = [
+  { name: '기획', color: '#EBE9FD' },
+  { name: '디자인', color: '#E0F2FE' },
+  { name: '프론트엔드', color: '#D1FAE5' },
+  { name: '백엔드', color: '#FEF3C7' }
+];
+
+// 페이지 로드 시 데이터 불러오기
+window.addEventListener('DOMContentLoaded', () => {
+  const token = localStorage.getItem('access_token');
+  if (!token) {
+    console.log('No token found, but allowing access');
+  }
+  
+  loadProjects();
+  loadSkills();
+  loadCertifications();
+});
+
+// 프로젝트 관련
+const openProjectModalBtn = document.getElementById('open-project-modal');
+const projectModalOverlay = document.getElementById('project-modal-overlay');
+const closeProjectModalBtn = document.getElementById('modal-close-btn');
+
+if (openProjectModalBtn) {
+  openProjectModalBtn.addEventListener('click', () => {
+    projectModalOverlay.classList.add('is-active');
+  });
+}
+
+if (closeProjectModalBtn) {
+  closeProjectModalBtn.addEventListener('click', () => {
+    projectModalOverlay.classList.remove('is-active');
+  });
+}
+
+if (projectModalOverlay) {
+  projectModalOverlay.addEventListener('click', (event) => {
+    if (event.target === projectModalOverlay) {
+      projectModalOverlay.classList.remove('is-active');
+    }
+  });
+}
+
+// 프로젝트 폼 제출
+document.getElementById('home-project-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  
+  const year = document.getElementById('project-year').value;
+  const month = document.getElementById('project-month').value.padStart(2, '0');
+  const categoryRadio = document.querySelector('input[name="category"]:checked');
+  const title = document.getElementById('project-name').value;
+  const partCheckboxes = document.querySelectorAll('input[name="part"]:checked');
+  
+  const parts = Array.from(partCheckboxes).map(cb => cb.value);
+  
+  const projectData = {
+    title: title,
+    category: categoryRadio ? categoryRadio.value : '학교',
+    description: parts.join(', '),
+    start_date: `${year}-${month}-01`,
+    end_date: null,
+  };
+
+  try {
+    const response = await fetch(`${API_URL}/projects/`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Token ${localStorage.getItem('access_token')}`
+      },
+      body: JSON.stringify(projectData)
+    });
+
+    if (response.ok) {
+      projectModalOverlay.classList.remove('is-active');
+      document.getElementById('home-project-form').reset();
+      loadProjects();
+    } else {
+      alert('프로젝트 추가 실패');
+    }
+  } catch (error) {
+    console.error('Error:', error);
+    alert('오류가 발생했습니다');
+  }
+});
+
+async function loadProjects() {
+  try {
+    const response = await fetch(`${API_URL}/projects/`, {
+      headers: {
+        'Authorization': `Token ${localStorage.getItem('access_token')}`
+      }
+    });
+
+    const projects = await response.json();
+    projects.sort((a,b) => (b.start_date||'').localeCompare(a.start_date||''));
+    const container = document.getElementById('projects-container');
+
+    if (projects.length === 0) {
+      container.innerHTML = '<div class="empty-state">아직 프로젝트가 없습니다.</div>';
+      return;
+    }
+
+    container.innerHTML = projects.map(project => {
+      const d = new Date(project.start_date);
+      const dateStr = `${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,'0')}`;
+      
+      const parts = (project.description || '').split(', ').filter(p => p);
+      const tagsHtml = parts.map(part => {
+        const partObj = customParts.find(p => p.name === part);
+        const bgColor = partObj ? partObj.color : '#EBE9FD';
+        return `<span class="tag" style="background: ${bgColor};">${part}</span>`;
+      }).join('');
+
+      return `
+      <div class="project-list-item">
+        <span class="date">${dateStr}</span>
+        <span class="category">${project.category || '학교'}</span>
+        <span class="title">${project.title || ''}</span>
+        <div class="project-tags">${tagsHtml}</div>
+      </div>`;
+    }).join('');
+  } catch (error) {
+    console.error('Error loading projects:', error);
+  }
+}
+
+// 자격증 관련
+const openCertModalBtn = document.getElementById('open-cert-modal');
+const certModalOverlay = document.getElementById('cert-modal-overlay');
+const closeCertModalBtn = document.getElementById('cert-modal-close-btn');
+
+if (openCertModalBtn) {
+  openCertModalBtn.addEventListener('click', () => {
+    certModalOverlay.classList.add('is-active');
+  });
+}
+
+if (closeCertModalBtn) {
+  closeCertModalBtn.addEventListener('click', () => {
+    certModalOverlay.classList.remove('is-active');
+  });
+}
+
+if (certModalOverlay) {
+  certModalOverlay.addEventListener('click', (event) => {
+    if (event.target === certModalOverlay) {
+      certModalOverlay.classList.remove('is-active');
+    }
+  });
+}
+
+document.getElementById('cert-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  
+  const year = document.getElementById('cert-year').value;
+  const month = document.getElementById('cert-month').value.padStart(2, '0');
+  const day = document.getElementById('cert-day').value.padStart(2, '0');
+  const title = document.getElementById('cert-name').value;
+
+  const certData = {
+    title: title,
+    issuer: '',
+    issue_date: `${year}-${month}-${day}`,
+    credential_url: null,
+  };
+
+  try {
+    const response = await fetch(`${API_URL}/certifications/`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Token ${localStorage.getItem('access_token')}`
+      },
+      body: JSON.stringify(certData)
+    });
+
+    if (response.ok) {
+      certModalOverlay.classList.remove('is-active');
+      document.getElementById('cert-form').reset();
+      loadCertifications();
+    } else {
+      alert('자격증 추가 실패');
+    }
+  } catch (error) {
+    console.error('Error:', error);
+  }
+});
+
+async function loadCertifications() {
+  try {
+    const response = await fetch(`${API_URL}/certifications/`, {
+      headers: {
+        'Authorization': `Token ${localStorage.getItem('access_token')}`
+      }
+    });
+
+    const certs = await response.json();
+    const container = document.getElementById('certs-container');
+
+    if (certs.length === 0) {
+      container.innerHTML = '<div class="empty-state">아직 자격증이 없습니다.</div>';
+      return;
+    }
+
+    container.innerHTML = certs.map(cert => {
+      const d = new Date(cert.issue_date);
+      const dateStr = `${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,'0')}.${String(d.getDate()).padStart(2,'0')}`;
+      return `
+      <div class="cert-list-item">
+        <span class="date">${dateStr}</span>
+        <span class="title">${cert.title}</span>
+      </div>`;
+    }).join('');
+  } catch (error) {
+    console.error('Error loading certifications:', error);
+  }
+}
+
+// 역량 관련
+const openSkillModalBtn = document.getElementById('open-skill-modal');
+const skillModalOverlay = document.getElementById('skill-modal-overlay');
+const closeSkillModalBtn = document.getElementById('skill-modal-close-btn');
+const skillSubmitBtn = document.getElementById('skill-submit-btn');
+
+if (openSkillModalBtn) {
+  openSkillModalBtn.addEventListener('click', () => {
+    skillModalOverlay.classList.add('is-active');
+  });
+}
+
+function closeSkillModal() {
+  skillModalOverlay.classList.remove('is-active');
+}
+
+if (closeSkillModalBtn) {
+  closeSkillModalBtn.addEventListener('click', closeSkillModal);
+}
+
+if (skillSubmitBtn) {
+  skillSubmitBtn.addEventListener('click', async () => {
+    const selectedSkills = document.querySelectorAll('.skill-icon-item.selected');
+    
+    for (const skillEl of selectedSkills) {
+      const skillName = skillEl.dataset.skill;
+      const skillData = {
+        name: skillName,
+        proficiency: 3,
+      };
+
+      try {
+        await fetch(`${API_URL}/skills/`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Token ${localStorage.getItem('access_token')}`
+          },
+          body: JSON.stringify(skillData)
+        });
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    }
+    
+    closeSkillModal();
+    loadSkills();
+    
+    // 선택 해제
+    selectedSkills.forEach(el => el.classList.remove('selected'));
+  });
+}
+
+if (skillModalOverlay) {
+  skillModalOverlay.addEventListener('click', (event) => {
+    if (event.target === skillModalOverlay) {
+      closeSkillModal();
+    }
+  });
+}
+
+const skillIcons = document.querySelectorAll('.skill-icon-item');
+if (skillIcons) {
+  skillIcons.forEach(icon => {
+    icon.addEventListener('click', () => {
+      icon.classList.toggle('selected');
+    });
+  });
+}
+
+async function loadSkills() {
+  try {
+    const response = await fetch(`${API_URL}/skills/`, {
+      headers: {
+        'Authorization': `Token ${localStorage.getItem('access_token')}`
+      }
+    });
+
+    const skills = await response.json();
+    const container = document.getElementById('skills-container');
+
+    if (skills.length === 0) {
+      container.innerHTML = '<div class="empty-state">아직 역량이 없습니다.</div>';
+      return;
+    }
+
+    container.innerHTML = skills.map(skill => {
+      const iconMapping = {
+        'PowerPoint': 'icon_pp.png',
+        'Excel': 'icon_excel.png',
+        'HTML5': 'icon_html.png',
+        'C++': 'icon_cpp.png',
+        'Figma': 'icon_figma.png',
+        'Illustrator': 'icon_ai.png',
+        'Photoshop': 'icon_ps.png',
+        'Lightroom': 'icon_lr.png',
+        'After Effects': 'icon_ae.png',
+        'InDesign': 'icon_id.png',
+        'Python': 'icon_python.png',
+        'React': 'icon_react.png',
+        'Java': 'icon_java.png',
+        'Swift': 'icon_swift.png',
+        'Android': 'icon_android.png'
+      };
+      const iconFile = iconMapping[skill.name] || 'icon_python.png';
+      return `<img src="images/${iconFile}" alt="${skill.name}">`;
+    }).join('');
+  } catch (error) {
+    console.error('Error loading skills:', error);
+  }
+}
+
+// 추가 옵션 모달 (구분/파트 추가)
+const addOptionButtons = document.querySelectorAll('.btn-add-option');
+const addCategoryModalOverlay = document.getElementById('add-category-modal');
+const closeCategoryModalBtn = addCategoryModalOverlay ? addCategoryModalOverlay.querySelector('[data-modal-close="add-category-modal"]') : null;
+const addCategoryModalTitle = document.getElementById('add-category-modal-title');
+
+if (addOptionButtons.length > 0 && addCategoryModalOverlay) {
+  addOptionButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      const modalTitle = button.dataset.modalTitle;
+      currentModalType = modalTitle.includes('구분') ? 'category' : 'part';
+      
+      projectModalOverlay.classList.remove('is-active');
+      
+      if (addCategoryModalTitle) {
+        addCategoryModalTitle.textContent = modalTitle;
+      }
+      
+      setTimeout(() => {
+        addCategoryModalOverlay.classList.add('is-active');
+      }, 50);
+    });
+  });
+}
+
+function closeAndReopenFirstModal() {
+  if (addCategoryModalOverlay && projectModalOverlay) {
+    addCategoryModalOverlay.classList.remove('is-active');
+    
+    setTimeout(() => {
+      projectModalOverlay.classList.add('is-active');
+    }, 50);
+  }
+}
+
+if (closeCategoryModalBtn) {
+  closeCategoryModalBtn.addEventListener('click', closeAndReopenFirstModal);
+}
+
+if (addCategoryModalOverlay) {
+  addCategoryModalOverlay.addEventListener('click', (event) => {
+    if (event.target === addCategoryModalOverlay) {
+      closeAndReopenFirstModal();
+    }
+  });
+}
+
+// 색상 선택
+const colorDots = document.querySelectorAll('.color-dot');
+let selectedColor = '#EBE9FD';
+
+colorDots.forEach(dot => {
+  dot.addEventListener('click', () => {
+    colorDots.forEach(d => d.classList.remove('selected'));
+    dot.classList.add('selected');
+    selectedColor = dot.dataset.color;
+  });
+});
+
+// 추가 옵션 폼 제출
+const addOptionForm = document.getElementById('add-option-form');
+if (addOptionForm) {
+  addOptionForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    
+    const newItemName = document.getElementById('new-item-name').value;
+    
+    if (currentModalType === 'category') {
+      // 구분 추가
+      const categoryGroup = document.getElementById('category-group');
+      if (categoryGroup) {
+        const newId = 'cat-' + Date.now();
+        const radioHtml = `
+          <input type="radio" id="${newId}" name="category" value="${newItemName}">
+          <label for="${newId}" class="radio-label">${newItemName}</label>
+        `;
+        categoryGroup.insertAdjacentHTML('beforeend', radioHtml);
+        customCategories.push({ name: newItemName, color: selectedColor });
+      }
+    } else {
+      // 파트 추가
+      const partGroup = document.getElementById('part-group');
+      if (partGroup) {
+        const newId = 'part-' + Date.now();
+        const checkboxHtml = `
+          <input type="checkbox" id="${newId}" name="part" value="${newItemName}">
+          <label for="${newId}" class="radio-label" style="background: ${selectedColor};">${newItemName}</label>
+        `;
+        partGroup.insertAdjacentHTML('beforeend', checkboxHtml);
+        customParts.push({ name: newItemName, color: selectedColor });
+      }
+    }
+    
+    addOptionForm.reset();
+    colorDots.forEach(d => d.classList.remove('selected'));
+    selectedColor = '#EBE9FD';
+    
+    closeAndReopenFirstModal();
+  });
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HEYCOUN - ?�트?�리??/title>
+  <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" rel="stylesheet" />
+  <style>
+    :root {
+      --deep: #1E1F31;
+      --accent: #7460F0;
+      --bg-light: #F5F3FF;
+      --bg-light-gray: #F8F9FA;
+      --border-gray: #E0E0E0;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: "Pretendard", "Noto Sans KR", system-ui, -apple-system, "Segoe UI", Roboto;
+      background: #FFFFFF;
+      color: var(--deep);
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+
+    .portfolio-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 40px;
+    }
+
+    .portfolio-header h1 {
+      font-size: 2rem;
+      font-weight: 700;
+    }
+
+    .section {
+      margin-bottom: 60px;
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      padding: 0 0 16px 0;
+      border-bottom: 2px solid var(--bg-light-gray);
+    }
+
+    .section-header h2 {
+      font-size: 1.5rem;
+      font-weight: 600;
+    }
+
+    .add-btn {
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      font-size: 1.5rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+
+    .add-btn:hover {
+      background: #6350d8;
+    }
+
+    .items-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    .item-card {
+      background: var(--bg-light);
+      border: 1px solid var(--border-gray);
+      border-radius: 12px;
+      padding: 20px;
+      position: relative;
+    }
+
+    .item-card h3 {
+      font-size: 1.1rem;
+      margin-bottom: 8px;
+      color: var(--deep);
+    }
+
+    .item-card p {
+      font-size: 0.9rem;
+      color: #666;
+      margin-bottom: 4px;
+    }
+
+    .item-card .date {
+      font-size: 0.85rem;
+      color: #999;
+      margin-top: 12px;
+    }
+
+    .delete-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: #ff6b6b;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 28px;
+      height: 28px;
+      cursor: pointer;
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+
+    .delete-btn:hover {
+      background: #ff5252;
+    }
+
+    /* Modal Styles */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      animation: fadeIn 0.3s ease;
+    }
+
+    .modal.active {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .modal-content {
+      background-color: white;
+      padding: 40px;
+      border-radius: 16px;
+      width: 90%;
+      max-width: 500px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+      animation: slideUp 0.3s ease;
+    }
+
+    @keyframes slideUp {
+      from {
+        transform: translateY(30px);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+    }
+
+    .modal-header h2 {
+      font-size: 1.3rem;
+      font-weight: 600;
+    }
+
+    .close-btn {
+      background: none;
+      border: none;
+      font-size: 1.8rem;
+      cursor: pointer;
+      color: #999;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+      color: var(--deep);
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid var(--border-gray);
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 1rem;
+    }
+
+    .form-group textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(116, 96, 240, 0.1);
+    }
+
+    .date-inputs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .form-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 28px;
+    }
+
+    .btn {
+      padding: 12px 24px;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: #6350d8;
+    }
+
+    .btn-secondary {
+      background: var(--bg-light-gray);
+      color: var(--deep);
+    }
+
+    .btn-secondary:hover {
+      background: #e8e8e8;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 40px 20px;
+      color: #999;
+    }
+
+    .empty-state p {
+      font-size: 1.1rem;
+      margin-bottom: 16px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <div class="portfolio-header">
+    <h1>???�트?�리??/h1>
+  </div>
+
+  <!-- ?�로?�트 ?�션 -->
+  <div class="section">
+    <div class="section-header">
+      <h2>?�� ?�의 ?�로?�트??/h2>
+      <button class="add-btn" onclick="openProjectModal()">+</button>
+    </div>
+    <div id="projects-container" class="items-grid">
+      <div class="empty-state">
+        <p>?�직 ?�로?�트가 ?�습?�다.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ??�� ?�션 -->
+  <div class="section">
+    <div class="section-header">
+      <h2>?�️ ?�의 ??��??/h2>
+      <button class="add-btn" onclick="openSkillModal()">+</button>
+    </div>
+    <div id="skills-container" class="items-grid">
+      <div class="empty-state">
+        <p>?�직 ??��???�습?�다.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ?�격�??�션 -->
+  <div class="section">
+    <div class="section-header">
+      <h2>?�� ?�의 ?�격증들</h2>
+      <button class="add-btn" onclick="openCertModal()">+</button>
+    </div>
+    <div id="certs-container" class="items-grid">
+      <div class="empty-state">
+        <p>?�직 ?�격증이 ?�습?�다.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ?�로?�트 모달 -->
+<div id="projectModal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2>?�로?�트 추�?</h2>
+      <button class="close-btn" onclick="closeProjectModal()">&times;</button>
+    </div>
+    <form id="projectForm">
+      <div class="form-group">
+        <label for="projectTitle">?�로?�트�?/label>
+        <input type="text" id="projectTitle" required>
+      </div>
+      <div class="form-group">
+        <label for="projectCategory">구분</label>
+        <select id="projectCategory" required>
+          <option value="">?�택?�세??/option>
+          <option value="school">?�교</option>
+          <option value="internship">?�?�활??/option>
+          <option value="personal">개인?�로?�트</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="projectDesc">?�로?�트 ?�명</label>
+        <textarea id="projectDesc" required></textarea>
+      </div>
+      <div class="form-group">
+        <label>기간</label>
+        <div class="date-inputs">
+          <input type="date" id="projectStartDate" required>
+          <input type="date" id="projectEndDate">
+        </div>
+      </div>
+      <div class="form-actions">
+        <button type="button" class="btn btn-secondary" onclick="closeProjectModal()">취소</button>
+        <button type="submit" class="btn btn-primary">추�?</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ??�� 모달 -->
+<div id="skillModal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2>??�� 추�?</h2>
+      <button class="close-btn" onclick="closeSkillModal()">&times;</button>
+    </div>
+    <form id="skillForm">
+      <div class="form-group">
+        <label for="skillName">??���?/label>
+        <input type="text" id="skillName" placeholder="?? Python, React, UI/UX Design" required>
+      </div>
+      <div class="form-group">
+        <label for="skillLevel">?�련??/label>
+        <select id="skillLevel" required>
+          <option value="">?�택?�세??/option>
+          <option value="1">초급</option>
+          <option value="2">?�급</option>
+          <option value="3">중급</option>
+          <option value="4">?�급</option>
+          <option value="5">?�문가</option>
+        </select>
+      </div>
+      <div class="form-actions">
+        <button type="button" class="btn btn-secondary" onclick="closeSkillModal()">취소</button>
+        <button type="submit" class="btn btn-primary">추�?</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ?�격�?모달 -->
+<div id="certModal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2>?�격�?추�?</h2>
+      <button class="close-btn" onclick="closeCertModal()">&times;</button>
+    </div>
+    <form id="certForm">
+      <div class="form-group">
+        <label for="certTitle">?�격증명</label>
+        <input type="text" id="certTitle" required>
+      </div>
+      <div class="form-group">
+        <label for="certIssuer">발급기�?</label>
+        <input type="text" id="certIssuer" required>
+      </div>
+      <div class="form-group">
+        <label>발급??/label>
+        <input type="date" id="certIssueDate" required>
+      </div>
+      <div class="form-group">
+        <label for="certUrl">?�격�?URL (?�택?�항)</label>
+        <input type="url" id="certUrl">
+      </div>
+      <div class="form-actions">
+        <button type="button" class="btn btn-secondary" onclick="closeCertModal()">취소</button>
+        <button type="submit" class="btn btn-primary">추�?</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+const API_URL = 'http://localhost:8000/api';
+
+// Helpers
+function pad2(n){ return String(n).padStart(2, '0'); }
+function ym(dateStr){
+  if(!dateStr) return '';
+  const d = new Date(dateStr);
+  if (isNaN(d.getTime())) return dateStr; // fallback
+  return `${d.getFullYear()}.${pad2(d.getMonth()+1)}`;
+}
+function categoryLabel(cat){
+  if (cat === 'school') return '학교';
+  if (cat === 'internship') return '대외활동';
+  if (cat === 'personal') return '개인프로젝트';
+  return cat || '';
+}
+
+// ?�이지 로드 ??로그??체크
+window.addEventListener('DOMContentLoaded', () => {
+  const token = localStorage.getItem('access_token');
+  if (!token) {
+    window.location.href = 'login_api.html';
+    return;
+  }
+  
+  loadProjects();
+  loadSkills();
+  loadCertifications();
+});
+
+// ?�로?�트 관???�수
+function openProjectModal() {
+  document.getElementById('projectModal').classList.add('active');
+}
+
+function closeProjectModal() {
+  document.getElementById('projectModal').classList.remove('active');
+  document.getElementById('projectForm').reset();
+}
+
+document.getElementById('projectForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  
+  const projectData = {
+    title: document.getElementById('projectTitle').value,
+    category: document.getElementById('projectCategory').value,
+    description: document.getElementById('projectDesc').value,
+    start_date: document.getElementById('projectStartDate').value,
+    end_date: document.getElementById('projectEndDate').value || null,
+  };
+
+  try {
+    const response = await fetch(`${API_URL}/projects/`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Token ${localStorage.getItem('access_token')}`
+      },
+      body: JSON.stringify(projectData)
+    });
+
+    if (response.ok) {
+      closeProjectModal();
+      loadProjects();
+    } else {
+      alert('?�로?�트 추�? ?�패');
+    }
+  } catch (error) {
+    console.error('Error:', error);
+    alert('?�류가 발생?�습?�다');
+  }
+});
+
+async function loadProjects() {
+  try {
+    const response = await fetch(`${API_URL}/projects/`, {
+      headers: {
+        'Authorization': `Token ${localStorage.getItem('access_token')}`
+      }
+    });
+
+    const projects = await response.json();
+    // 최신순(시작일 내림차순) 정렬
+    projects.sort((a,b) => (b.start_date||'').localeCompare(a.start_date||''));
+    const container = document.getElementById('projects-container');
+
+    if (projects.length === 0) {
+      container.innerHTML = '<div class="empty-state"><p>?�직 ?�로?�트가 ?�습?�다.</p></div>';
+      return;
+    }
+
+    container.innerHTML = projects.map(project => {
+      const start = ym(project.start_date);
+      const cat = categoryLabel(project.category);
+      const desc = (project.description || '').length > 60 ? `${project.description.substring(0,60)}...` : (project.description||'');
+      return `
+      <div class="item-card">
+        <button class="delete-btn" onclick="deleteProject(${project.id})">×</button>
+        <h3>${project.title || ''}</h3>
+        <p>${cat}</p>
+        <p>${desc}</p>
+        <div class="date">${start}</div>
+      </div>`;
+    }).join('');
+  } catch (error) {
+    console.error('Error loading projects:', error);
+  }
+}
+
+async function deleteProject(id) {
+  if (confirm('?�말 ??��?�시겠습?�까?')) {
+    try {
+      await fetch(`${API_URL}/projects/${id}/`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Token ${localStorage.getItem('access_token')}`
+        }
+      });
+      loadProjects();
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
+}
+
+// ??�� 관???�수
+function openSkillModal() {
+  document.getElementById('skillModal').classList.add('active');
+}
+
+function closeSkillModal() {
+  document.getElementById('skillModal').classList.remove('active');
+  document.getElementById('skillForm').reset();
+}
+
+document.getElementById('skillForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  
+  const skillData = {
+    name: document.getElementById('skillName').value,
+    proficiency: parseInt(document.getElementById('skillLevel').value),
+  };
+
+  try {
+    const response = await fetch(`${API_URL}/skills/`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Token ${localStorage.getItem('access_token')}`
+      },
+      body: JSON.stringify(skillData)
+    });
+
+    if (response.ok) {
+      closeSkillModal();
+      loadSkills();
+    } else {
+      alert('??�� 추�? ?�패');
+    }
+  } catch (error) {
+    console.error('Error:', error);
+  }
+});
+
+async function loadSkills() {
+  try {
+    const response = await fetch(`${API_URL}/skills/`, {
+      headers: {
+        'Authorization': `Token ${localStorage.getItem('access_token')}`
+      }
+    });
+
+    const skills = await response.json();
+    const container = document.getElementById('skills-container');
+
+    if (skills.length === 0) {
+      container.innerHTML = '<div class="empty-state"><p>?�직 ??��???�습?�다.</p></div>';
+      return;
+    }
+
+    const proficiencyLabel = ['', '초급', '?�급', '중급', '?�급', '?�문가'];
+    container.innerHTML = skills.map(skill => `
+      <div class="item-card">
+        <button class="delete-btn" onclick="deleteSkill(${skill.id})">×</button>
+        <h3>${skill.name}</h3>
+        <p>?�련?? ${proficiencyLabel[skill.proficiency]}</p>
+      </div>
+    `).join('');
+  } catch (error) {
+    console.error('Error loading skills:', error);
+  }
+}
+
+async function deleteSkill(id) {
+  if (confirm('?�말 ??��?�시겠습?�까?')) {
+    try {
+      await fetch(`${API_URL}/skills/${id}/`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Token ${localStorage.getItem('access_token')}`
+        }
+      });
+      loadSkills();
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
+}
+
+// ?�격�?관???�수
+function openCertModal() {
+  document.getElementById('certModal').classList.add('active');
+}
+
+function closeCertModal() {
+  document.getElementById('certModal').classList.remove('active');
+  document.getElementById('certForm').reset();
+}
+
+document.getElementById('certForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  
+  const certData = {
+    title: document.getElementById('certTitle').value,
+    issuer: document.getElementById('certIssuer').value,
+    issue_date: document.getElementById('certIssueDate').value,
+    credential_url: document.getElementById('certUrl').value || null,
+  };
+
+  try {
+    const response = await fetch(`${API_URL}/certifications/`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Token ${localStorage.getItem('access_token')}`
+      },
+      body: JSON.stringify(certData)
+    });
+
+    if (response.ok) {
+      closeCertModal();
+      loadCertifications();
+    } else {
+      alert('?�격�?추�? ?�패');
+    }
+  } catch (error) {
+    console.error('Error:', error);
+  }
+});
+
+async function loadCertifications() {
+  try {
+    const response = await fetch(`${API_URL}/certifications/`, {
+      headers: {
+        'Authorization': `Token ${localStorage.getItem('access_token')}`
+      }
+    });
+
+    const certs = await response.json();
+    const container = document.getElementById('certs-container');
+
+    if (certs.length === 0) {
+      container.innerHTML = '<div class="empty-state"><p>?�직 ?�격증이 ?�습?�다.</p></div>';
+      return;
+    }
+
+    container.innerHTML = certs.map(cert => `
+      <div class="item-card">
+        <button class="delete-btn" onclick="deleteCert(${cert.id})">×</button>
+        <h3>${cert.title}</h3>
+        <p>${cert.issuer}</p>
+        <div class="date">발급?? ${cert.issue_date}</div>
+      </div>
+    `).join('');
+  } catch (error) {
+    console.error('Error loading certifications:', error);
+  }
+}
+
+async function deleteCert(id) {
+  if (confirm('?�말 ??��?�시겠습?�까?')) {
+    try {
+      await fetch(`${API_URL}/certifications/${id}/`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Token ${localStorage.getItem('access_token')}`
+        }
+      });
+      loadCertifications();
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
+}
+</script>
+
+</body>
+</html>
