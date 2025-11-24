@@ -19,7 +19,7 @@
     </div>
     <div class="user-menu">
       <span class="welcome-msg" id="header-username">반가워요!</span>
-      <a href="intro.html" class="logout-link" onclick="handleLogout()">로그아웃</a>
+      <a href="/intro" class="logout-link" onclick="handleLogout()">로그아웃</a>
     </div>
   </header>
 
@@ -32,18 +32,16 @@
           <img src="images/chat_icon.png" alt="Chat">
         </div>
       </a>
-      
       <a href="paragraphs.html" class="action-card">
         <h3>나의 문단들 만들러가기</h3>
         <div class="card-icon">
           <img src="images/write_icon.png" alt="Write">
         </div>
       </a>
-      
       <div class="guide-section">
         <div class="guide-header">
           <span>이용 가이드</span>
-          <a href="guide.html">전체보기 ></a>
+          <a href="guide.html" id="guide-view-link">전체보기 &gt;</a>
         </div>
         <nav class="guide-nav">
           <a href="#" class="guide-item">
@@ -60,90 +58,27 @@
     </section>
 
     <section class="content-section">
-        <div class="section-header">
-            <h2>📄 나의 프로젝트</h2>
-            <button class="btn-add" id="open-project-modal">＋</button>
-        </div>
-      
-      <div class="project-list">
-        <div class="project-card">
-            <div class="proj-info">
-                <span class="proj-date">2022.03</span>
-                <span class="proj-cat">학교</span>
-                <span class="proj-title">식품 알러지 권고 홍보 프로젝트</span>
-            </div>
-            <div class="proj-tags">
-                <span class="tag">기획</span>
-                <span class="tag">디자인</span>
-            </div>
-        </div>
-        
-        <div class="project-card">
-            <div class="proj-info">
-                <span class="proj-date">2023.11</span>
-                <span class="proj-cat">학교</span>
-                <span class="proj-title">AI 활용 심리상담 앱 제작</span>
-            </div>
-            <div class="proj-tags">
-                <span class="tag">기획</span>
-                <span class="tag">프론트엔드</span>
-            </div>
-        </div>
-
-        <div class="project-card">
-            <div class="proj-info">
-                <span class="proj-date">2024.09</span>
-                <span class="proj-cat">대외활동</span>
-                <span class="proj-title">UNITY 활용 게임 제작</span>
-            </div>
-            <div class="proj-tags">
-                <span class="tag">기획</span>
-                <span class="tag">디자인</span>
-                <span class="tag">백엔드</span>
-            </div>
-        </div>
+      <div class="section-header">
+        <h2>📄 나의 프로젝트</h2>
+        <button class="btn-add" id="open-project-modal">＋</button>
       </div>
+      <div class="project-list" id="project-list"></div>
     </section>
 
     <section class="content-section">
-        <div class="section-header">
-            <h2>⚙️ 나의 역량</h2>
-            <button class="btn-add" id="open-skill-modal">＋</button>
-        </div>
-      
-      <div class="skill-container">
-        <div class="skill-item"><img src="images/icon_pp.png" alt="PPT"></div>
-        <div class="skill-item"><img src="images/icon_excel.png" alt="Excel"></div>
-        <div class="skill-item"><img src="images/icon_html.png" alt="HTML"></div>
-        <div class="skill-item"><img src="images/icon_cpp.png" alt="C++"></div>
-        <div class="skill-item"><img src="images/icon_figma.png" alt="Figma"></div>
+      <div class="section-header">
+        <h2>⚙️ 나의 역량</h2>
+        <button class="btn-add" id="open-skill-modal">＋</button>
       </div>
+      <div class="skill-container" id="skill-container"></div>
     </section>
 
     <section class="content-section">
-        <div class="section-header">
-            <h2>📜 자격증</h2>
-            <button class="btn-add" id="open-cert-modal">＋</button>
-        </div>
-
-        <div class="cert-list">
-            <div class="cert-card">
-                <span class="cert-title">GTQ 1급</span>
-                <span class="cert-date">2022.03.21</span>
-            </div>
-            <div class="cert-card">
-                <span class="cert-title">ITQ 엑셀 A등급</span>
-                <span class="cert-date">2023.09.01</span>
-            </div>
-            <div class="cert-card">
-                <span class="cert-title">ITQ 파워포인트 A등급</span>
-                <span class="cert-date">2023.09.01</span>
-            </div>
-            <div class="cert-card">
-                <span class="cert-title">리눅스마스터 2급</span>
-                <span class="cert-date">2024.11.22</span>
-            </div>
-        </div>
+      <div class="section-header">
+        <h2>📜 자격증</h2>
+        <button class="btn-add" id="open-cert-modal">＋</button>
+      </div>
+      <div class="cert-list" id="cert-list"></div>
     </section>
 
   </main>
@@ -153,68 +88,56 @@
         <button class="modal-close-btn" id="modal-close-btn">&times;</button>
         <h2>📄 프로젝트 추가</h2>
         <p class="modal-subtitle">내가 했던 모든 활동들을 기록해보세요</p>
-
         <form>
             <div class="form-group">
                 <div class="form-group-header">
-                    <label>구분</label>
-                    <button type="button" class="btn-add-option">+ 구분 추가</button>
+                  <label>구분</label>
+                  <button type="button" id="add-category-btn">+ 구분 추가</button>
                 </div>
-                <div class="radio-group">
+                <div class="radio-group" id="category-group">
                     <input type="radio" id="cat-school" name="category" value="school" checked>
                     <label for="cat-school" class="radio-label">학교</label>
-                    
                     <input type="radio" id="cat-external" name="category" value="external">
                     <label for="cat-external" class="radio-label">대외활동</label>
                 </div>
             </div>
-
             <div class="form-group">
                 <label for="project-name">프로젝트명</label>
                 <input type="text" id="project-name" class="full-width-input" placeholder="예: 식품 알러지 홍보 프로젝트">
             </div>
-
             <div class="form-group">
                 <div class="form-group-header">
-                    <label>담당 파트</label>
-                    <button type="button" class="btn-add-option">+ 파트 추가</button>
+                  <label>담당 파트</label>
+                  <button type="button" id="add-part-btn">+ 파트 추가</button>
                 </div>
-                <div class="radio-group">
-                    <input type="radio" id="part-plan" name="part" value="plan">
-                    <label for="part-plan" class="radio-label">기획</label>
-                    <input type="radio" id="part-design" name="part" value="design">
-                    <label for="part-design" class="radio-label">디자인</label>
-                    <input type="radio" id="part-front" name="part" value="front">
-                    <label for="part-front" class="radio-label">프론트엔드</label>
-                </div>
+                <div class="radio-group" id="part-group"></div>
             </div>
-
             <button type="submit" class="modal-submit-btn">추가하기</button>
         </form>
     </div>
-  </div>
+    </div>
+    <div class="modal-overlay" id="cert-modal-overlay">
+      <div class="modal-content">
+        <button class="modal-close-btn" id="cert-modal-close-btn">&times;</button>
+        <h2>📜 자격증 추가</h2>
+        <p class="modal-subtitle">취득한 자격증 정보를 입력해주세요</p>
 
-  <div class="modal-overlay" id="cert-modal-overlay">
-    <div class="modal-content">
-      <button class="modal-close-btn" id="cert-modal-close-btn">&times;</button>
-      <h2>📜 자격증 추가</h2>
-      <p class="modal-subtitle">취득한 자격증 정보를 입력해주세요</p>
-
-      <form>
-        <div class="form-group">
-          <label>취득일자</label>
-          <div class="date-inputs">
-            <input type="text" placeholder="YYYY" class="date-input"> 년
-            <input type="text" placeholder="MM" class="date-input"> 월
-            <input type="text" placeholder="DD" class="date-input"> 일
+        <form>
+          <div class="form-group">
+            <label>취득일자</label>
+            <div class="date-inputs">
+              <input type="text" placeholder="YYYY" class="date-input"> 년
+              <input type="text" placeholder="MM" class="date-input"> 월
+              <input type="text" placeholder="DD" class="date-input"> 일
+            </div>
           </div>
-        </div>
-        <div class="form-group">
-          <label for="cert-name">자격증 명</label>
-          <input type="text" id="cert-name" class="full-width-input" placeholder="예: 정보처리기사">
-        </div>
-        <button type="submit" class="modal-submit-btn">추가하기</button>
-      </form>
+          <div class="form-group">
+            <label for="cert-name">자격증 명</label>
+            <input type="text" id="cert-name" class="full-width-input" placeholder="예: 정보처리기사">
+          </div>
+          <button type="submit" class="modal-submit-btn">추가하기</button>
+        </form>
+      </div>
     </div>
   </div>
 
@@ -241,45 +164,183 @@
   </div>
 
   <script>
+      // 구분/파트 동적 추가용 배열
+      let categories = ['학교', '대외활동'];
+      let parts = ['기획', '디자인', '프론트엔드'];
+
+      // 구분/파트 렌더 함수
+      function renderCategories() {
+        const group = document.getElementById('category-group');
+        group.innerHTML = '';
+        categories.forEach((cat, idx) => {
+          group.innerHTML += `<input type="radio" id="cat-${idx}" name="category" value="${cat}" ${idx===0?'checked':''}>
+          <label for="cat-${idx}" class="radio-label">${cat}</label>`;
+        });
+      }
+      function renderParts() {
+        const group = document.getElementById('part-group');
+        group.innerHTML = '';
+        parts.forEach((part, idx) => {
+          group.innerHTML += `<input type="checkbox" id="part-${idx}" name="part" value="${part}">
+          <label for="part-${idx}" class="radio-label">${part}</label>`;
+        });
+      }
+
+      // 구분 추가 버튼
+      document.getElementById('add-category-btn').onclick = function() {
+        const newCat = prompt('새 구분명을 입력하세요');
+        if(newCat && !categories.includes(newCat)) {
+          categories.push(newCat);
+          renderCategories();
+        }
+      };
+      // 파트 추가 버튼 (버그 수정: parts 배열에만 추가)
+      document.getElementById('add-part-btn').onclick = function() {
+        const newPart = prompt('새 파트명을 입력하세요');
+        if(newPart && !parts.includes(newPart)) {
+          parts.push(newPart);
+          renderParts();
+        }
+      };
+
+      // 모달 열릴 때마다 구분/파트 렌더
+      document.getElementById('open-project-modal').onclick = function() {
+        renderCategories();
+        renderParts();
+        document.getElementById('project-modal-overlay').classList.add('is-active');
+      };
     window.onload = function() {
-        const savedName = localStorage.getItem('username') || '김서현'; 
-        document.getElementById('header-username').innerText = `${savedName}님, 안녕하세요!`;
+      const savedName = localStorage.getItem('username') || '김서현'; 
+      document.getElementById('header-username').innerText = `${savedName}님, 안녕하세요!`;
+      renderAll();
     };
 
     function handleLogout() {
-        localStorage.removeItem('isHeycounLoggedIn');
-        alert('로그아웃 되었습니다.');
+      localStorage.removeItem('isHeycounLoggedIn');
+      alert('로그아웃 되었습니다.');
+      location.href = '/';
     }
 
+    // 데이터 저장
+    let projects = JSON.parse(localStorage.getItem('projects') || '[]');
+    let skills = JSON.parse(localStorage.getItem('skills') || '[]');
+    let certs = JSON.parse(localStorage.getItem('certs') || '[]');
+
+    // 렌더 함수
+    function renderProjects() {
+      const list = document.getElementById('project-list');
+      list.innerHTML = '';
+      projects.forEach(proj => {
+        const card = document.createElement('div');
+        card.className = 'project-card';
+        card.innerHTML = `<div class="proj-info">
+          <span class="proj-date">${proj.date}</span>
+          <span class="proj-cat">${proj.cat}</span>
+          <span class="proj-title">${proj.title}</span>
+        </div>
+        <div class="proj-tags">${proj.tags.map(tag => `<span class='tag'>${tag}</span>`).join('')}</div>`;
+        list.appendChild(card);
+      });
+    }
+    function renderSkills() {
+      const list = document.getElementById('skill-container');
+      list.innerHTML = '';
+      skills.forEach(skill => {
+        const item = document.createElement('div');
+        item.className = 'skill-item';
+        item.innerHTML = `<img src="${skill.icon}" alt="${skill.name}">`;
+        list.appendChild(item);
+      });
+    }
+    function renderCerts() {
+      const list = document.getElementById('cert-list');
+      list.innerHTML = '';
+      certs.forEach(cert => {
+        const card = document.createElement('div');
+        card.className = 'cert-card';
+        card.innerHTML = `<span class="cert-title">${cert.name}</span><span class="cert-date">${cert.date}</span>`;
+        list.appendChild(card);
+      });
+    }
+    function renderAll() {
+      renderProjects();
+      renderSkills();
+      renderCerts();
+    }
+
+    // 모달 세팅
     function setupModal(triggerId, overlayId, closeId) {
-        const trigger = document.getElementById(triggerId);
-        const overlay = document.getElementById(overlayId);
-        const close = document.getElementById(closeId);
-
-        if(trigger && overlay) {
-            trigger.addEventListener('click', () => overlay.classList.add('is-active'));
-        }
-        if(close && overlay) {
-            close.addEventListener('click', () => overlay.classList.remove('is-active'));
-        }
-        if(overlay) {
-            overlay.addEventListener('click', (e) => {
-                if(e.target === overlay) overlay.classList.remove('is-active');
-            });
-        }
+      const trigger = document.getElementById(triggerId);
+      const overlay = document.getElementById(overlayId);
+      const close = document.getElementById(closeId);
+      if(trigger && overlay) {
+        trigger.addEventListener('click', () => overlay.classList.add('is-active'));
+      }
+      if(close && overlay) {
+        close.addEventListener('click', () => overlay.classList.remove('is-active'));
+      }
+      if(overlay) {
+        overlay.addEventListener('click', (e) => {
+          if(e.target === overlay) overlay.classList.remove('is-active');
+        });
+      }
     }
-
     setupModal('open-project-modal', 'project-modal-overlay', 'modal-close-btn');
-    setupModal('open-cert-modal', 'cert-modal-overlay', 'cert-modal-close-btn');
     setupModal('open-skill-modal', 'skill-modal-overlay', 'skill-modal-close-btn');
-    
-    document.getElementById('skill-submit-btn').addEventListener('click', () => {
-        document.getElementById('skill-modal-overlay').classList.remove('is-active');
-    });
 
-    const skillIcons = document.querySelectorAll('.skill-icon-item');
-    skillIcons.forEach(icon => {
-        icon.addEventListener('click', () => icon.classList.toggle('selected'));
+    // 자격증 +버튼 클릭 시 모달 열기
+    document.getElementById('open-cert-modal').onclick = function() {
+      document.getElementById('cert-modal-overlay').classList.add('is-active');
+    };
+
+    // 프로젝트 추가
+    document.querySelector('#project-modal-overlay form').onsubmit = function(e) {
+      e.preventDefault();
+      const date = this.querySelector('#project-name').value ? new Date().toISOString().slice(0,7).replace('-', '.') : '';
+      const cat = this.querySelector('input[name="category"]:checked').nextElementSibling.innerText;
+      const title = this.querySelector('#project-name').value;
+      const tags = Array.from(this.querySelectorAll('input[name="part"]:checked')).map(i => i.nextElementSibling.innerText);
+      if(title) {
+        projects.push({date, cat, title, tags});
+        localStorage.setItem('projects', JSON.stringify(projects));
+        renderProjects();
+        document.getElementById('project-modal-overlay').classList.remove('is-active');
+        this.reset();
+      }
+    };
+
+    // 자격증 추가
+    document.querySelector('#cert-modal-overlay form').onsubmit = function(e) {
+      e.preventDefault();
+      const year = this.querySelector('.date-input[placeholder="YYYY"]').value;
+      const month = this.querySelector('.date-input[placeholder="MM"]').value;
+      const day = this.querySelector('.date-input[placeholder="DD"]').value;
+      const name = this.querySelector('#cert-name').value;
+      const date = `${year}.${month}.${day}`;
+      if(name && year && month && day) {
+        certs.push({name, date});
+        localStorage.setItem('certs', JSON.stringify(certs));
+        renderCerts();
+        document.getElementById('cert-modal-overlay').classList.remove('is-active');
+        this.reset();
+      }
+    };
+
+    // 역량 추가
+    document.getElementById('skill-submit-btn').onclick = function() {
+      const icons = Array.from(document.querySelectorAll('.skill-icon-item.selected')).map(i => {
+        const img = i.querySelector('img');
+        return {icon: img.src, name: img.alt};
+      });
+      skills = icons;
+      localStorage.setItem('skills', JSON.stringify(skills));
+      renderSkills();
+      document.getElementById('skill-modal-overlay').classList.remove('is-active');
+    };
+
+    // 아이콘 선택
+    document.querySelectorAll('.skill-icon-item').forEach(icon => {
+      icon.onclick = function() { icon.classList.toggle('selected'); };
     });
   </script>
 </body>

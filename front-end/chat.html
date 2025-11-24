@@ -249,7 +249,7 @@
 
   <header class="chat-header">
     <a class="menu-icon" id="open-menu-btn">☰</a>
-    <a href="paragraphs.html" class="go-paragraph-link">문단 만들러 가기</a>
+    <a href="#" id="go-paragraph-link" class="go-paragraph-link">문단 만들러 가기</a>
   </header>
 
   <main class="chat-log-area" id="chat-log-area">
@@ -312,28 +312,70 @@
     const chatInput = document.getElementById('chat-input');
     const chatLogArea = document.getElementById('chat-log-area');
     const chatWelcomeLogo = document.getElementById('chat-welcome-logo');
+    let lastAIReply = null;
 
     if (chatForm) {
-      chatForm.addEventListener('submit', (event) => {
-        event.preventDefault(); 
-        
+      chatForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
         const messageText = chatInput.value.trim();
-        if (messageText === "") {
-          return;
-        }
-
+        if (messageText === "") return;
         if (chatWelcomeLogo && chatWelcomeLogo.style.display !== 'none') {
           chatWelcomeLogo.style.display = 'none';
           chatLogArea.style.justifyContent = 'flex-start';
         }
         appendMessage(messageText, 'user-bubble');
-    
         chatInput.value = "";
         chatInput.style.height = 'auto';
 
-        setTimeout(() => {
-          appendMessage("그 내용에 대해 좀 더 자세히 알려주시겠어요?", 'ai-bubble');
-        }, 1000);
+        // 실제 AI 서버와 연동
+        try {
+          const response = await fetch('/chats/api/message/', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ message: messageText })
+          });
+          const data = await response.json();
+          if (data.reply) {
+            appendMessage(data.reply, 'ai-bubble');
+            lastAIReply = data.reply;
+          } else {
+            appendMessage("AI 답변을 받아올 수 없습니다.", 'ai-bubble');
+            lastAIReply = null;
+          }
+        } catch (error) {
+          appendMessage("서버 연결에 실패했습니다.", 'ai-bubble');
+          lastAIReply = null;
+        }
+      });
+    }
+
+    // 문단 만들러 가기 버튼 클릭 시 AI 답변을 DB에 저장 후 페이지 이동
+    const goParagraphBtn = document.getElementById('go-paragraph-link');
+    if (goParagraphBtn) {
+      goParagraphBtn.addEventListener('click', async (event) => {
+        event.preventDefault();
+        if (!lastAIReply) {
+          alert('AI 답변이 없습니다. 먼저 채팅을 진행해 주세요.');
+          return;
+        }
+        // 문단 생성 API 호출
+        try {
+          const response = await fetch('/chats/api/paragraphs/', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              title: lastAIReply.split('\n')[0].replace('[제목]', '').trim(),
+              content: lastAIReply.split('\n').slice(1).join('\n').trim()
+            })
+          });
+          if (response.ok) {
+            window.location.href = '/paragraphs.html';
+          } else {
+            alert('문단 저장에 실패했습니다.');
+          }
+        } catch (error) {
+          alert('서버 연결에 실패했습니다.');
+        }
       });
     }
 

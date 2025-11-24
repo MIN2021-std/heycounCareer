@@ -1,3 +1,11 @@
+.example-text {
+    font-size: 0.95rem;
+    color: #A0A0B0;
+    margin-bottom: 8px;
+    margin-left: 2px;
+    letter-spacing: -0.2px;
+    font-weight: 400;
+}
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 body {
@@ -223,7 +231,16 @@ footer { text-align: center;  padding: 0 0 30px; color: #999; font-size: 13px; b
 }
 .modal-submit-btn:hover { background: #5B4EFA; }
 .form-group-header { display: flex; justify-content: space-between; margin-bottom: 8px; }
-.btn-add-option { background: none; border: none; font-size: 0.8rem; color: #6D5DCD; font-weight: 700; cursor: pointer; }
+.btn-add-option, #add-category-btn, #add-part-btn {
+    background: none !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    font-size: 0.9rem;
+    color: #6D5DCD;
+    font-weight: 700;
+    cursor: pointer;
+}
 
 .skill-icon-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; padding: 10px 0; }
 .skill-icon-item {

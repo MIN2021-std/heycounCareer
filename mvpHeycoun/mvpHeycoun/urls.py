@@ -72,15 +72,26 @@ def serve_static(request, path):
         return FileResponse(open(file_path, 'rb'), content_type=content_type or 'application/octet-stream')
     raise Http404('File not found')
 
+def serve_css(request, filename):
+    """CSS 파일 서빙"""
+    file_path = FRONTEND_DIR / filename
+    if file_path.exists() and file_path.is_file():
+        return FileResponse(open(file_path, 'rb'), content_type='text/css')
+    raise Http404('CSS file not found')
+
 urlpatterns = [
     path('', serve_html('intro.html'), name='intro'),
     path('intro/', serve_html('intro.html'), name='intro_page'),
     path('home/', serve_html('home.html'), name='home'),
-    path('login/', serve_html('login_api.html'), name='login_page'),
-    path('signup/', serve_html('signup.html'), name='signup_page'),
+    path('login.html', serve_html('login.html'), name='login_page'),
+    path('signup.html', serve_html('signup.html'), name='signup_page'),
+    path('home.html', serve_html('home.html'), name='home_html'),
+    path('paragraphs.html', serve_html('paragraphs.html'), name='paragraphs_html'),
+    path('chat.html', serve_html('chat.html'), name='chat_html'),
     path('portfolio/', serve_html('portfolio.html'), name='portfolio_page'),
     path('paragraphs/', serve_html('paragraphs.html'), name='paragraphs_page'),
     path('guide/', serve_html('guide.html'), name='guide_page'),
+    path('guide.html', serve_html('guide.html'), name='guide_html'),
     path('project_explain.html', serve_html('project_explain.html'), name='project_explain'),
     path('team_explain.html', serve_html('team_explain.html'), name='team_explain'),
     path('admin/', admin.site.urls),
@@ -91,6 +102,7 @@ urlpatterns = [
     path('api/auth/signup/', signup, name='signup'),
     path('api/auth/logout/', logout, name='logout'),
     path('api/auth/quick/', quick_login, name='quick_login'),
-    # 정적 파일 서빙 (이미지 등)
+    # 정적 파일 서빙 (이미지, CSS 등)
     re_path(r'^images/(?P<path>.+)$', serve_static, name='serve_images'),
+    path('style.css', serve_css, {'filename': 'style.css'}, name='serve_css'),
 ]

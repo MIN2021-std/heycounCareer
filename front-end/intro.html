@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HEYCOUN</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="/style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
@@ -15,7 +15,7 @@
         <header>
             <div class="header-inner">
                 <div class="logo">
-                    <img src="images/logo.png" alt="HEYCOUN">
+                    <img src="/images/logo.png" alt="HEYCOUN">
                 </div>
                 <nav>
                     <ul class="nav-list">
@@ -28,7 +28,7 @@
                         </li>
                     </ul>
                 </nav>
-                <a href="signup.html" class="btn-signup">회원가입</a>
+                <a href="/signup.html" class="btn-signup">회원가입</a>
             </div>
         </header>
 
@@ -48,7 +48,7 @@
                 </div>
 
                 <div class="image-area">
-                    <img src="images/phone.png" alt="App Mockup" class="phone-img">
+                    <img src="/images/phone.png" alt="App Mockup" class="phone-img">
                 </div>
             </div>
         </section>
@@ -65,20 +65,20 @@
             <div class="feature-card" onclick="checkLogin('chat')">
                 <h3>AI와 채팅하러 가기</h3>
                 <div class="card-icon">
-                    <img src="images/chat_icon.png" alt="Chat">
+                    <img src="/images/chat_icon.png" alt="Chat">
                 </div>
             </div>
 
             <div class="feature-card" onclick="checkLogin('write')">
                 <h3>나의 문단들 만들러가기</h3>
                 <div class="card-icon">
-                    <img src="images/write_icon.png" alt="Write">
+                    <img src="/images/write_icon.png" alt="Write">
                 </div>
             </div>
             </div>
             
             <div class="footer-character">
-                <img src="images/rabbit_footer.png" alt="Rabbit Character">
+                <img src="/images/rabbit_footer.png" alt="Rabbit Character">
             </div>
         </section>
     </main>
@@ -88,7 +88,7 @@
     </footer>
 
     <script>
-      fetch('project_explain.html')
+    fetch('/project_explain.html')
           .then(response => response.text())
           .then(data => {
               document.getElementById('dropdown-target').innerHTML = data;
@@ -97,13 +97,13 @@
     </script>
 
     <script>
-        fetch('project_explain.html')
+        fetch('/project_explain.html')
             .then(response => response.text())
             .then(data => {
                 document.getElementById('dropdown-target').innerHTML = data;
             });
 
-        fetch('team_explain.html')
+        fetch('/team_explain.html')
             .then(response => response.text())
             .then(data => {
                 document.getElementById('team-target').innerHTML = data;
@@ -114,15 +114,15 @@
         function checkLogin(serviceType) {
             if (!isLoggedIn) {
                 alert("회원가입이 필요한 서비스입니다...");
-                location.href = 'signup.html';
-                } else {
-                    if (serviceType === 'chat') {
-                        location.href = 'chat.html'; 
-                    } else if (serviceType === 'write') {
-                location.href = 'paragraphs.html'; 
+                location.href = '/signup.html';
+            } else {
+                if (serviceType === 'chat') {
+                    location.href = '/chat.html'; 
+                } else if (serviceType === 'write') {
+                    location.href = '/paragraphs.html'; 
+                }
             }
         }
-    }
     </script>
 </body>
 </html>

@@ -133,12 +133,20 @@
     .paragraph-card {
       background: #FFFFFF;
       border-radius: 20px;
-      padding: 30px; 
+      padding: 30px;
       box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      height: 420px; 
+      height: 420px;
+      border: 2px solid transparent;
+      transition: border-color 0.18s, box-shadow 0.18s, transform 0.18s;
+      cursor: pointer;
+    }
+    .paragraph-card:hover {
+      border-color: #7460F0;
+      box-shadow: 0 12px 32px rgba(116,96,240,0.10);
+      transform: translateY(-2px) scale(1.02);
     }
 
     .paragraph-card h3 {
@@ -212,66 +220,130 @@
       <button type="submit">🔍</button>
     </form>
 
-    <main class="paragraph-grid">
-      <div class="paragraph-card">
-        <div>
-          <h3>데이터 기반 UX 설계</h3>
-          <p>저는 A/B 테스트, 히트맵 분석 및 GA, Hotjar 등 정량적/정성적 데이터를 활용해 사용자 행동 패턴을 깊이 있게 파악합니다. 이를 바탕으로 핵심 사용자 여정(User Journey)의 문제점을 명확히 정의하고, 가설 기반의 디자인 솔루션을 빠르게 도출하여 프로토타입을 검증했습니다. 구체적으로 전환율(CVR), 재방문율, 사용자당 매출(ARPU) 등 핵심 비즈니스 지표를...</p>
-        </div>
-        <div class="card-footer">
-          <span>2025-10-11</span>
-          <span>320자</span>
-        </div>
-      </div>
-      
-      <div class="paragraph-card">
-        <div>
-          <h3>AI 심리상담 앱 기획</h3>
-          <p>AI 챗봇을 활용한 24시간 심리 상담 서비스 '마음봇'을 기획했습니다. 타겟 유저 인터뷰를 통해 '비용 부담'과 '시간 제약'이라는 핵심 페인 포인트를 발견했습니다. 이를 해결하기 위해 구독형 모델과 LLM 기반의 공감형 대화 시나리오를 설계하여, 초기 MVP 단계에서 10%의 높은 리텐션율을 달성했습니다.</p>
-        </div>
-        <div class="card-footer">
-          <span>2024-11-20</span>
-          <span>180자</span>
-        </div>
-      </div>
-
-      <div class="paragraph-card">
-        <div>
-          <h3>교내 앱/웹 개발 동아리 창립</h3>
-          <p>개발자와 디자이너 간의 협업 경험 부족 문제를 해결하기 위해 'Co-Up' 동아리를 창립했습니다. Git-flow, Figma, Notion을 표준 협업 툴로 도입하고, 2주 단위 스프린트 방식으로 3개의 사이드 프로젝트(학교 식단 알리미, 중고책 거래)를 성공적으로 배포했습니다. 이 경험을 통해 프로젝트 관리(PM) 역량을 길렀습니다.</p>
-        </div>
-        <div class="card-footer">
-          <span>2024-03-01</span>
-          <span>210자</span>
-        </div>
-      </div>
-
-      <div class="paragraph-card">
-        <div>
-          <h3>리눅스마스터 2급 자격증 취득</h3>
-          <p>백엔드 개발에 대한 이해를 높이고자 리눅스마스터 2급 자격증을 취득했습니다. OS의 기본 구조, 명령어, 쉘 스크립트 작성법을 학습하며 서버 환경에 대한 기초를 다졌습니다. 특히 AWS EC2 인스턴스에 직접 Nginx와 Node.js 환경을 구축하고 배포 자동화 파이프라인을 설정해보는 실습을 진행했습니다.</p>
-        </div>
-        <div class="card-footer">
-          <span>2025-01-15</span>
-          <span>195자</span>
-        </div>
-      </div>
+    <main class="paragraph-grid" id="paragraph-grid">
+      <!-- JS로 동적 렌더링 -->
     </main>
+    <div id="modal-bg" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.18);z-index:2000;"></div>
+    <div id="edit-modal" style="display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:#fff;border-radius:24px;box-shadow:0 12px 40px rgba(0,0,0,0.18);padding:44px 44px 36px 44px;z-index:2100;min-width:540px;max-width:540px;width:100%;">
+      <h2 style="font-size:1.35rem;font-weight:700;margin-bottom:22px;">문단 편집</h2>
+      <label style="font-weight:600;display:block;margin-bottom:10px;">제목<br>
+        <input id="modal-title" type="text" style="width:100%;margin-top:6px;margin-bottom:18px;padding:10px 12px;border-radius:10px;border:1.5px solid #d1d1e0;font-size:1rem;background:#fafaff;font-family:'Pretendard','Noto Sans KR',system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial;">
+      </label>
+      <label style="font-weight:600;display:block;margin-bottom:10px;">내용<br>
+        <textarea id="modal-content" rows="8" style="width:100%;margin-top:6px;margin-bottom:18px;padding:10px 12px;border-radius:10px;border:1.5px solid #d1d1e0;font-size:1rem;background:#fafaff;resize:vertical;font-family:'Pretendard','Noto Sans KR',system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial;"></textarea>
+      </label>
+      <div style="display:flex;justify-content:flex-end;gap:16px;margin-top:18px;">
+        <button id="modal-delete" style="background:#f44;color:#fff;border:none;padding:10px 28px;border-radius:10px;font-weight:600;font-size:1rem;">삭제</button>
+        <button id="modal-cancel" style="background:#f5f5f7;color:#222;border:none;padding:10px 28px;border-radius:10px;font-weight:600;font-size:1rem;">취소</button>
+        <button id="modal-save" style="background:#7460F0;color:#fff;border:none;padding:10px 28px;border-radius:10px;font-weight:600;font-size:1rem;">저장</button>
+      </div>
+      <button id="modal-close" style="position:absolute;top:22px;right:22px;background:none;border:none;font-size:1.7rem;color:#888;cursor:pointer;">&times;</button>
+    </div>
   </div> <a href="chat.html" class="cta-image-button">
     <img src="images/chat_btn.png" alt="채팅하러 가기">
   </a>
 
   <script>
     document.addEventListener('DOMContentLoaded', () => {
+      // 카테고리 네비게이션 활성화
       const navLinks = document.querySelectorAll('.category-nav a');
       navLinks.forEach(link => {
         link.addEventListener('click', (event) => {
-          event.preventDefault(); 
-          navLinks.forEach(navLink => {
-            navLink.classList.remove('is-active');
-          });
+          event.preventDefault();
+          navLinks.forEach(navLink => navLink.classList.remove('is-active'));
           event.currentTarget.classList.add('is-active');
         });
+      });
+
+      // 모달 관련 요소
+      const modalBg = document.getElementById('modal-bg');
+      const modal = document.getElementById('edit-modal');
+      const modalTitle = document.getElementById('modal-title');
+      const modalContent = document.getElementById('modal-content');
+      const modalDelete = document.getElementById('modal-delete');
+      const modalCancel = document.getElementById('modal-cancel');
+      const modalSave = document.getElementById('modal-save');
+      const modalClose = document.getElementById('modal-close');
+      let currentParagraph = null;
+
+      function openModal(paragraph) {
+        currentParagraph = paragraph;
+        modalTitle.value = paragraph.title;
+        modalContent.value = paragraph.content;
+        modal.style.display = 'block';
+        modalBg.style.display = 'block';
+      }
+      function closeModal() {
+        modal.style.display = 'none';
+        modalBg.style.display = 'none';
+        currentParagraph = null;
+      }
+      modalClose.onclick = modalCancel.onclick = closeModal;
+
+      modalDelete.onclick = async () => {
+        if (!currentParagraph) return;
+        if (confirm('정말 삭제하시겠습니까?')) {
+          await fetch(`/chats/api/paragraphs/${currentParagraph.id}/`, { method: 'DELETE' });
+          closeModal();
+          loadParagraphs();
+        }
+      };
+      modalSave.onclick = async () => {
+        if (!currentParagraph) return;
+        await fetch(`/chats/api/paragraphs/${currentParagraph.id}/`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ title: modalTitle.value, content: modalContent.value })
+        });
+        closeModal();
+        loadParagraphs();
+      };
+
+      // 문단 목록 동적 렌더링
+      const grid = document.getElementById('paragraph-grid');
+      function renderParagraphs(paragraphs) {
+        grid.innerHTML = '';
+        paragraphs.forEach(p => {
+          const card = document.createElement('div');
+          card.className = 'paragraph-card';
+          card.innerHTML = `
+            <div>
+              <h3>${p.title}</h3>
+              <p>${p.content}</p>
+            </div>
+            <div class="card-footer">
+              <span>${p.created_at ? p.created_at.split('T')[0] : ''}</span>
+              <span>${p.char_count || p.content.length}자</span>
+            </div>
+          `;
+          card.onclick = () => openModal(p);
+          grid.appendChild(card);
+        });
+      }
+
+      let allParagraphs = [];
+      async function loadParagraphs() {
+        const res = await fetch('/chats/api/paragraphs/');
+        allParagraphs = await res.json();
+        renderParagraphs(allParagraphs);
+      }
+      loadParagraphs();
+
+      // 검색 기능
+      const searchInput = document.querySelector('.search-bar input');
+      const searchForm = document.querySelector('.search-bar');
+      searchForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const keyword = searchInput.value.trim().toLowerCase();
+        if (!keyword) {
+          renderParagraphs(allParagraphs);
+          return;
+        }
+        const filtered = allParagraphs.filter(p =>
+          p.title.toLowerCase().includes(keyword) ||
+          p.content.toLowerCase().includes(keyword)
+        );
+        renderParagraphs(filtered);
       });
     });
   </script>
