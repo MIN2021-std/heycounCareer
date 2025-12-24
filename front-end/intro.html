@@ -88,6 +88,8 @@
     </footer>
 
     <script>
+        // 임시: 페이지 진입 시 자동 로그아웃 (회원가입 안내 테스트용)
+        localStorage.removeItem('isHeycounLoggedIn');
     fetch('/project_explain.html')
           .then(response => response.text())
           .then(data => {
